@@ -7,8 +7,8 @@ set number
 set t_Co=256
 syntax enable 
 
-set tabstop =8
-set shiftwidth =8
+set tabstop =4
+set shiftwidth =4
 
 filetype plugin on
 filetype indent on
@@ -44,7 +44,9 @@ Plug 'https://github.com/scrooloose/nerdtree' " File Browser
 Plug 'https://github.com/tpope/vim-fugitive' " Git support
 Plug 'vim-airline/vim-airline' " Airline
 
-Plug 'gregsexton/gitv', {'on': ['Gitv']}
+Plug 'gregsexton/gitv', {'on': ['Gitv']} " Git log support
+
+Plug 'fatih/vim-go'
 
 Plug 'lervag/vimtex'
 
@@ -56,6 +58,11 @@ Plug 'dikiaap/minimalist' " Minimalist Color Scheme
 Plug 'morhetz/gruvbox'
 call plug#end()
 
+
+" ======================
+" Theme Specific
+" ======================
+set background =dark " Needed for Tmux
 
 " ======================
 " Plugin Specific Options
