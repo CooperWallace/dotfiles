@@ -120,8 +120,9 @@ label-urgent-padding = ${module/bspwm.label-urgent-padding}
 ; NOTE: The label needs to match the name of the i3 workspace
 ws-icon-0 = 1; 
 ws-icon-1 = 2; 
-ws-icon-2 = 9; 
-ws-icon-3 = 10; 
+ws-icon-2 = 8; 
+ws-icon-3 = 9; 
+ws-icon-4 = 10; 
 
 ws-icon-default = 
 ;ws-icon-default = 

@@ -11,8 +11,10 @@ ids=$(xinput --list | awk -v search="$SEARCH" \
                  }'\
      )
 
+# Mouse Speed prop name has been changed. 
+# https://askubuntu.com/questions/905424/upgraded-16-04-to-17-04-now-unable-to-change-mouse-speed
 for i in $ids
 do
-	xinput set-prop $i 'Device Accel Constant Deceleration' 2.5
+	xinput set-prop $i 'libinput Accel Speed' -0.49
 done
 
