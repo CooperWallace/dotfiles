@@ -9,5 +9,6 @@ cp -rf ~/.config/compton.conf $PWD/.config
 
 # Config Files in $HOME
 cp -rf ~/.vimrc $PWD
+cp -rf ~/.tmux.conf $PWD
 
 echo "Finished"
