@@ -34,27 +34,30 @@ map <C-Left> :tabprevious<CR>
 map <C-Right> :tabnext<CR>
 map <C-n> :tabnew<CR>
 
+" Compile single file C Program
+map <F8> :w <CR> :!clear <CR>:!gcc -Wall -ansi % -o %< && ./%<<CR>
+
 
 " ======================
 " Begin loading Plugins
 " ======================
 call plug#begin('~/.vim/plugged')
-Plug 'https://github.com/leafgarland/typescript-vim.git' "TS Syntax
-Plug 'https://github.com/scrooloose/nerdtree' " File Browser
-Plug 'https://github.com/tpope/vim-fugitive' " Git support
-Plug 'vim-airline/vim-airline' " Airline
+Plug 'scrooloose/nerdtree'                " File Browser
+Plug 'vim-airline/vim-airline'            " Airline
+Plug 'vim-scripts/Align'                  " Alignment plugin
 
-Plug 'gregsexton/gitv', {'on': ['Gitv']} " Git log support
+" Tool Support
+Plug 'tpope/vim-fugitive'                 " Git support
+Plug 'gregsexton/gitv', {'on': ['Gitv']}  " Git log support
 
-Plug 'fatih/vim-go'
+" Language Support
+Plug 'leafgarland/typescript-vim'         " Typescript Syntax support
+Plug 'fatih/vim-go'                       " Golang development plugin
+Plug 'lervag/vimtex'                      " LaTeX plugin
 
-Plug 'lervag/vimtex'
-
-" Theme Specific
-Plug 'https://github.com/junegunn/goyo.vim'
-
-" Custom Color Schemes
-Plug 'dikiaap/minimalist' " Minimalist Color Scheme
+" Theme and Color Schemes
+Plug 'junegunn/goyo.vim'                  " Distraction free editting
+Plug 'dikiaap/minimalist'                 " Minimalist Color Scheme
 Plug 'morhetz/gruvbox'
 call plug#end()
 
@@ -64,16 +67,19 @@ call plug#end()
 " ======================
 set background =dark " Needed for Tmux
 
+
 " ======================
 " Plugin Specific Options
 " ======================
+" NERD Tree
 map <C-o> :NERDTreeToggle<CR>
 let NERDTreeQuitOnOpen =1
-"Gitv Horizontal display
+
+" Gitv Horizontal display
 let Gitv_OpenHorizontal =1 
 
-" Airline status bar
+" Airline
 set laststatus =2
 
-"Disable Typescript Vim indent
+" Disable Typescript Vim indent
 let g:typescript_indent_disable =1
