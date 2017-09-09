@@ -3,12 +3,25 @@
 # to the current directory
 
 # Config Files in $HOME/.config/
-cp -rf ~/.config/i3/ $PWD/.config
 cp -rf ~/.config/polybar/ $PWD/.config
 cp -rf ~/.config/compton.conf $PWD/.config
+cp -rf ~/.config/i3/ $PWD/.config
 
 # Config Files in $HOME
 cp -rf ~/.vimrc $PWD
 cp -rf ~/.tmux.conf $PWD
+
+# Rename config files based on the system copied from
+if [ "$HOSTNAME" = "Rexy-Laptop" ]; then
+	echo "Copying Laptop config files"
+	mv $PWD/.config/i3/config $PWD/.config/i3/config-laptop
+elif [ "$HOSTNAME" = "Rexy-pc" ]; then
+	echo "Copying Desktop config files"
+	mv $PWD/.config/i3/config $PWD/.config/i3/config-desktop
+else
+	echo "Unkown System"
+fi
+
+
 
 echo "Finished"
