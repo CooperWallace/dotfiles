@@ -9,6 +9,7 @@ cp -rf ~/.config/i3/ $PWD/.config
 
 # Config Files in $HOME
 cp -rf ~/.vimrc $PWD
+cp -rf ~/.zshrc $PWD
 cp -rf ~/.tmux.conf $PWD
 
 # Rename config files based on the system copied from
