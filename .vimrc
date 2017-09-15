@@ -46,6 +46,10 @@ Plug 'scrooloose/nerdtree'                " File Browser
 Plug 'vim-airline/vim-airline'            " Airline
 Plug 'vim-scripts/Align'                  " Alignment plugin
 
+" Ultisnips and the snippet files
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
 " Tool Support
 Plug 'tpope/vim-fugitive'                 " Git support
 Plug 'gregsexton/gitv', {'on': ['Gitv']}  " Git log support
