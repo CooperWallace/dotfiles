@@ -43,8 +43,9 @@ map <F8> :w <CR> :!clear <CR>:!gcc -Wall -ansi % -o %< && ./%<<CR>
 " ======================
 call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'                " File Browser
-Plug 'vim-airline/vim-airline'            " Airline
 Plug 'vim-scripts/Align'                  " Alignment plugin
+Plug 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+
 
 " Ultisnips and the snippet files
 Plug 'SirVer/ultisnips'
@@ -58,6 +59,7 @@ Plug 'gregsexton/gitv', {'on': ['Gitv']}  " Git log support
 Plug 'leafgarland/typescript-vim'         " Typescript Syntax support
 Plug 'fatih/vim-go'                       " Golang development plugin
 Plug 'lervag/vimtex'                      " LaTeX plugin
+Plug 'abby-walz/bullet_journal'           " Bullet Journal Plugin
 
 " Theme and Color Schemes
 Plug 'junegunn/goyo.vim'                  " Distraction free editting
