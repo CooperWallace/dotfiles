@@ -46,7 +46,6 @@ Plug 'scrooloose/nerdtree'                " File Browser
 Plug 'vim-scripts/Align'                  " Alignment plugin
 Plug 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
-
 " Ultisnips and the snippet files
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -60,6 +59,7 @@ Plug 'leafgarland/typescript-vim'         " Typescript Syntax support
 Plug 'fatih/vim-go'                       " Golang development plugin
 Plug 'lervag/vimtex'                      " LaTeX plugin
 Plug 'abby-walz/bullet_journal'           " Bullet Journal Plugin
+Plug 'reedes/vim-pencil'                  " Vim Writing plugin
 
 " Theme and Color Schemes
 Plug 'junegunn/goyo.vim'                  " Distraction free editting
@@ -72,6 +72,24 @@ call plug#end()
 " Theme Specific
 " ======================
 set background =dark " Needed for Tmux
+
+" Goyo Background workaround
+" Without the light theme will be applied on exit
+autocmd! User GoyoLeave
+autocmd  User GoyoLeave nested set background=dark
+
+
+" ======================
+" Notetaking Options
+" ======================
+
+" Markdown Rendering to file on save
+" 	Output to a default file, so that we don't have a bunch of pdf files
+" 	everywhere (~/default.pdf)
+autocmd BufWritePost *.md !pandoc -o ~/default.pdf "%:p"
+
+" Automatically use SoftPencil when opening a markdown file
+autocmd	BufNewFile,BufRead *.md SoftPencil
 
 
 " ======================
