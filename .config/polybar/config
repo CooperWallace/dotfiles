@@ -48,7 +48,7 @@ font-1 = FontAwesome:pixelsize=14;0
 
 modules-left = i3
 modules-center = date 
-modules-right = volume wlan battery
+modules-right = music volume wlan battery
 
 tray-position = right
 tray-padding = 2
@@ -237,6 +237,15 @@ animation-charging-3 = 
 animation-charging-4 = 
 nimation-charging-foreground = ${colors.foreground-alt}
 animation-charging-framerate = 1500
+
+[module/music]
+type = custom/script
+interval = 2
+
+label = %output:0:55:...%
+exec = ~/.config/polybar/mpris-cmus.sh
+
+click-left = playerctl-cmus play-pause
 
 [module/temperature]
 type = internal/temperature
