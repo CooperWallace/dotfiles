@@ -45,6 +45,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'                " File Browser
 Plug 'vim-scripts/Align'                  " Alignment plugin
 Plug 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+Plug 'jiangmiao/auto-pairs'				  " Auto close pairs of brackets
 
 " Ultisnips and the snippet files
 Plug 'SirVer/ultisnips'
