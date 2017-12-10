@@ -62,6 +62,9 @@ Plug 'lervag/vimtex'                      " LaTeX plugin
 Plug 'abby-walz/bullet_journal'           " Bullet Journal Plugin
 Plug 'reedes/vim-pencil'                  " Vim Writing plugin
 
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+
 " Theme and Color Schemes
 Plug 'junegunn/goyo.vim'                  " Distraction free editting
 Plug 'dikiaap/minimalist'                 " Minimalist Color Scheme
