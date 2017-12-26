@@ -51,7 +51,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git zsh-autosuggestions colored-man-pages)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -84,11 +84,13 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias vimrc='vim ~/.vimrc'
-alias i3config='vim ~/.config/i3/config'
-alias aptup='sudo apt update && sudo apt upgrade'
+alias update='sudo pacman -Syyu'
 
 # Command not found suggestion
-. /etc/zsh_command_not_found
+#. /etc/zsh_command_not_found
 
 # Set zsh to use the powerline theme
-. /usr/share/powerline/bindings/zsh/powerline.zsh
+. /usr/lib/python3.6/site-packages/powerline/bindings/zsh/powerline.zsh
+
+# Hist
+HISTSIZE=2000

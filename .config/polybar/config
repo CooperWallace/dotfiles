@@ -28,7 +28,7 @@ alert = #bd2c40
 
 [bar/mybar]
 width = 100%
-height = 23 
+height = 23
 bottom = true
 
 background = ${colors.background}
@@ -47,8 +47,8 @@ font-0 = Source Code Pro:size=10;1
 font-1 = FontAwesome:pixelsize=14;0
 
 modules-left = i3
-modules-center = date 
-modules-right = music volume wlan battery
+modules-center = date
+modules-right = music volume
 
 tray-position = right
 tray-padding = 2
@@ -75,11 +75,11 @@ label-occupied-padding = 1
 
 label-urgent = %index%!
 label-urgent-background = ${colors.alert}
-label-urgent-padding = 1 
+label-urgent-padding = 1
 
 label-empty = %index%
 label-empty-foreground = ${colors.foreground-alt}
-label-empty-padding = 1 
+label-empty-padding = 1
 
 [module/i3]
 type = internal/i3
@@ -87,10 +87,10 @@ format = <label-state> <label-mode>
 index-sort = true
 wrapping-scroll = false
 
-; Only show workspaces on the same output as the bar 
+; Only show workspaces on the same output as the bar
 ;pin-workspaces = true
 
-label-mode-padding = 2 
+label-mode-padding = 2
 label-mode-foreground = #000
 label-mode-background = ${colors.primary}
 
@@ -110,7 +110,7 @@ label-visible-background = ${self.label-focused-background}
 label-visible-underline = ${self.label-focused-underline}
 label-visible-padding = ${self.label-focused-padding}
 
-; urgent = Workspace with urgency hint set 
+; urgent = Workspace with urgency hint set
 label-urgent = %name%%icon%
 label-urgent-background = ${module/bspwm.label-urgent-background}
 label-urgent-padding = ${module/bspwm.label-urgent-padding}
@@ -124,7 +124,7 @@ ws-icon-2 = 8; 
 ws-icon-3 = 9; 
 ws-icon-4 = 10; 
 
-ws-icon-default = 
+ws-icon-default =
 ;ws-icon-default = 
 
 [module/cpu]
@@ -183,7 +183,7 @@ format-disconnected =
 
 [module/date]
 type = internal/date
-interval = 5
+interval = 1
 
 date =
 date-alt = "%A %d %B %Y"
@@ -201,7 +201,7 @@ label = %date% %time%
 type = internal/volume
 
 format-volume = <label-volume>
-label-volume =  %percentage%% 
+label-volume =  %percentage%%
 label-volume-foreground = ${root.foreground}
 format-volume-underline = ${colors.primary}
 
@@ -225,7 +225,7 @@ format-full-prefix = " "
 format-full-prefix-foreground = ${colors.foreground-alt}
 format-full-underline = ${self.format-charging-underline}
 
-ramp-capacity-0 =  
+ramp-capacity-0 = 
 ramp-capacity-1 = 
 ramp-capacity-2 = 
 ramp-capacity-foreground = ${root.foreground}
@@ -245,7 +245,7 @@ interval = 2
 label = %output:0:55:...%
 exec = ~/.config/polybar/mpris-cmus.sh
 
-click-left = playerctl-cmus play-pause
+click-left = playerctl play-pause
 
 [module/temperature]
 type = internal/temperature
