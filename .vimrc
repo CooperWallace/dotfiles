@@ -108,6 +108,9 @@ if !exists("g:UltiSnipsJumpForwardTrigger")
 	let g:UltiSnipsJumpForwardTrigger = "<tab>"
 endif
 
+" Add Go import and Format on save
+let g:go_fmt_command="goimports"
+
 " Gitv Horizontal display
 let Gitv_OpenHorizontal =1 
 
