@@ -90,7 +90,7 @@ autocmd  User GoyoLeave nested set background=dark
 " Markdown Rendering to file on save
 " 	Output to a default file, so that we don't have a bunch of pdf files
 " 	everywhere (~/default.pdf)
-autocmd BufWritePost *.md !pandoc -o ~/default.pdf "%:p"
+autocmd BufWritePost *.md !pandoc -H ~/.pandoc/header.tex -o ~/default.pdf "%:p"
 
 " Automatically use SoftPencil when opening a markdown file
 autocmd	BufNewFile,BufRead *.md SoftPencil
@@ -102,6 +102,11 @@ autocmd	BufNewFile,BufRead *.md SoftPencil
 " NERD Tree
 map <C-o> :NERDTreeToggle<CR>
 let NERDTreeQuitOnOpen =1
+
+"Better next placeholder
+if !exists("g:UltiSnipsJumpForwardTrigger")
+	let g:UltiSnipsJumpForwardTrigger = "<tab>"
+endif
 
 " Gitv Horizontal display
 let Gitv_OpenHorizontal =1 
