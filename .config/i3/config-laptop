@@ -13,6 +13,13 @@ set $mod Mod4
 font pango: Source Code Pro 10, FontAwesome 10
 
 
+for_window [class="^.*"] border pixel 0
+
+gaps inner 5 
+gaps outer 5
+
+smart_borders on
+
 #--- Window Managment Settings ---#
 # Remove border on new windows
 new_window pixel 0
@@ -20,7 +27,6 @@ new_window pixel 0
 # Basic i3 key binds
 floating_modifier $mod
 bindsym $mod+q kill
-bindsym $mod+h split h
 bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 bindsym $mod+s layout stacking
@@ -33,30 +39,33 @@ bindsym $mod+Shift+s sticky toggle
 
 # alt+tab back and forth
 bindsym Mod1+Tab workspace back_and_forth
+workspace_auto_back_and_forth yes
 
 
 #--- Workspace Assignments ---#
-assign [class="discord"] workspace 9
-for_window [class="Spotify"] move to workspace 10
 for_window [class="^Steam?"] move to workspace 8
+for_window [class="Slack"] move to workspace 9
+for_window [class="discord"] move to workspace 9
 
+assign [class="^Steam?"] workspace 8
+assign [class="Spotify"] workspace 10
 
 #--- Window Movement and Manipulation ---#
 # Change window focus using jkl. or cursor keys
-bindsym $mod+j focus left
+bindsym $mod+h focus left
 bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+bindsym $mod+j focus up
+bindsym $mod+l focus right
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # Move focused window using SHIFT+ jkl. or cursor keys
-bindsym $mod+Shift+j move left
+bindsym $mod+Shift+h move left
 bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
+bindsym $mod+Shift+j move up
+bindsym $mod+Shift+l move right
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
@@ -91,10 +100,10 @@ bindsym $mod+Shift+0 move container to workspace 10
 # Resize window mode (you can also use the mouse for that)
 #	Home: Resize a floating window to small video window
 mode "resize" {
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+        bindsym l resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym h resize grow width 10 px or 10 ppt
         bindsym Left resize shrink width 10 px or 10 ppt
         bindsym Down resize grow height 10 px or 10 ppt
         bindsym Up resize shrink height 10 px or 10 ppt
@@ -106,10 +115,63 @@ mode "resize" {
         bindsym Escape mode "default"
 }
 
+set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) shutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id "dm-tool lock", mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym p exec --no-startup-id systemctl poweroff, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# Press $mod+Shift+g to enter the gap mode. Choose o or i for modifying outer/inner gaps. Press one of + / - (in-/decrement for current workspace) or 0 (remove gaps for current workspace). If you also press Shift with these keys, the change will be global for all workspaces.
+mode "$mode_gaps" {
+	bindsym o      mode "$mode_gaps_outer"
+	bindsym i      mode "$mode_gaps_inner"
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_inner" {
+	bindsym plus  gaps inner current plus 5
+	bindsym minus gaps inner current minus 5
+	bindsym 0     gaps inner current set 0
+
+	bindsym Shift+plus  gaps inner all plus 5
+	bindsym Shift+minus gaps inner all minus 5
+	bindsym Shift+0     gaps inner all set 0
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_outer" {
+	bindsym plus  gaps outer current plus 5
+	bindsym minus gaps outer current minus 5
+	bindsym 0     gaps outer current set 0
+
+	bindsym Shift+plus  gaps outer all plus 5
+	bindsym Shift+minus gaps outer all minus 5
+	bindsym Shift+0     gaps outer all set 0
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
 
 #--- Mode Bindings ---#
 bindsym $mod+r mode "resize"
+bindsym XF86PowerOff mode "$mode_system"
 
+# i3 Gaps
+set $mode_gaps Gaps: (o) outer, (i) inner
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+bindsym $mod+Shift+g mode "$mode_gaps"
 
 #--- Startup Commands ---#
 
@@ -124,7 +186,10 @@ exec_always --no-startup-id $HOME/.config/i3/launchpoly.sh
 # Set trackpad natural Scrolling
 exec --no-startup-id synclient VertScrollDelta=-76
 
-exec_always --no-startup-id feh --bg-scale ~/Documents/Pictures/Wallpaper/1496208346750.jpg
+# Disable the trackpad when typing using synclient
+exec --no-startup-id synclient PalmDetect=1
+
+exec_always --no-startup-id "feh --bg-scale ~/Documents/Pictures/Desktop-Wallpaper.jpg"
 exec_always --no-startup-id nm-applet --sm-disable
 exec --no-startup-id light-locker
 exec --no-startup-id redshift-gtk
@@ -152,12 +217,9 @@ bindcode $mod+59 workspace prev
 bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightness
 
-
 #--- Media key binds ---#
-bindsym XF86AudioPlay "exec playerctl play-pause & exec cmus-remote -u"
-bindsym XF86AudioPause "exec playerctl stop & exec cmus-remote -s"
-bindsym XF86AudioNext "exec playerctl next & exec cmus-remote -n"
-bindsym XF86AudioPrev "exec playerctl previous & exec cmus-remote -r"
+## Laptop specific. No dedicated media keys
+bindsym $mod+Ctrl+space "exec playerctl play-pause & exec cmus-remote -u"
 
 #--- Audio key binds ---#
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
