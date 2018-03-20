@@ -9,3 +9,22 @@
     \end{center}
     }
 
+% This is a macro to include lecture slides inside of my notes
+% to avoid repeating them
+
+\usepackage{pdfpages}
+
+\newenvironment{lectSlide}[2] {
+	\begin{center}
+	\fbox{\includegraphics[page=#1, scale=0.3, clip]{\LectSlides}
+	\includegraphics[page=#2, scale=0.3, clip]{\LectSlides}}
+	\end{center}
+}
+
+\newenvironment{lectSlideiii}[3] {
+	\begin{center}
+	\fbox{\includegraphics[page=#1, scale=0.25, clip]{\LectSlides}
+	\includegraphics[page=#2, scale=0.25, clip]{\LectSlides}
+	\includegraphics[page=#3, scale=0.25, clip]{\LectSlides}}
+	\end{center}
+}
