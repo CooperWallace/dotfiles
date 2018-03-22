@@ -1,5 +1,5 @@
-\newenvironment{boxtext}
-    {\begin{center}
+\newenvironment{boxtext} {
+	\begin{center}
     \begin{tabular}{|p{0.9\textwidth}|}
     \hline\\
     }
@@ -7,24 +7,42 @@
     \\\\\hline
     \end{tabular} 
     \end{center}
-    }
+}
+
+
+
+% Work around to allow Markdown formatting in LaTeX
+\newcommand{\hideFromPandoc}[1]{#1}
+\hideFromPandoc{
+	\let\Begin\begin
+	\let\End\end
+}
+
 
 % This is a macro to include lecture slides inside of my notes
 % to avoid repeating them
 
 \usepackage{pdfpages}
 
+% Nice command to define lecture slide location
+\newcommand{\noteSlides}[1] {
+	\newcommand \LectSlides {#1}
+}
+
 \newenvironment{lectSlide}[2] {
 	\begin{center}
-	\fbox{\includegraphics[page=#1, scale=0.3, clip]{\LectSlides}
-	\includegraphics[page=#2, scale=0.3, clip]{\LectSlides}}
+	\fbox{\includegraphics[page=#1, width=0.45\linewidth, clip]{\LectSlides}
+	\includegraphics[page=#2, width=0.45\linewidth, clip]{\LectSlides}}
 	\end{center}
 }
 
+
 \newenvironment{lectSlideiii}[3] {
 	\begin{center}
-	\fbox{\includegraphics[page=#1, scale=0.25, clip]{\LectSlides}
-	\includegraphics[page=#2, scale=0.25, clip]{\LectSlides}
-	\includegraphics[page=#3, scale=0.25, clip]{\LectSlides}}
+	\fbox{
+		\includegraphics[page=#1, width=0.32\linewidth, clip]{\LectSlides}
+		\includegraphics[page=#2, width=0.32\linewidth, clip]{\LectSlides}
+		\includegraphics[page=#3, width=0.32\linewidth, clip]{\LectSlides}
+	}
 	\end{center}
 }
