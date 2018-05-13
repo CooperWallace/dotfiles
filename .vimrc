@@ -33,6 +33,8 @@ cmap w!! w !sudo tee > /dev/null %
 map <C-Left> :tabprevious<CR>
 map <C-Right> :tabnext<CR>
 map <C-n> :tabnew<CR>
+nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
+nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
 
 " Compile single file C Program
 map <F8> :w <CR> :!clear <CR>:!gcc -Wall -ansi % -o %< && ./%<<CR>
@@ -46,7 +48,6 @@ Plug 'scrooloose/nerdtree'                " File Browser
 Plug 'vim-scripts/Align'                  " Alignment plugin
 Plug 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plug 'jiangmiao/auto-pairs'				  " Auto close pairs of brackets
-
 " Ultisnips and the snippet files
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -55,12 +56,15 @@ Plug 'honza/vim-snippets'
 Plug 'tpope/vim-fugitive'                 " Git support
 Plug 'gregsexton/gitv', {'on': ['Gitv']}  " Git log support
 
+Plug 'mhinz/vim-startify'
+
 " Language Support
 Plug 'leafgarland/typescript-vim'         " Typescript Syntax support
 Plug 'fatih/vim-go'                       " Golang development plugin
 Plug 'lervag/vimtex'                      " LaTeX plugin
 Plug 'abby-walz/bullet_journal'           " Bullet Journal Plugin
 Plug 'reedes/vim-pencil'                  " Vim Writing plugin
+Plug 'Chiel92/vim-autoformat'
 
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
@@ -82,7 +86,6 @@ set background =dark " Needed for Tmux
 autocmd! User GoyoLeave
 autocmd  User GoyoLeave nested set background=dark
 
-
 " ======================
 " Notetaking Options
 " ======================
@@ -90,10 +93,18 @@ autocmd  User GoyoLeave nested set background=dark
 " Markdown Rendering to file on save
 " 	Output to a default file, so that we don't have a bunch of pdf files
 " 	everywhere (~/default.pdf)
-autocmd BufWritePost *.md !pandoc -H ~/.pandoc/header.tex -o ~/default.pdf "%:p"
+"autocmd BufWritePost *.md !pandoc -H ~/.pandoc/header.tex -o ~/default.pdf "%:p"
 
 " Automatically use SoftPencil when opening a markdown file
 autocmd	BufNewFile,BufRead *.md SoftPencil
+
+" MIPS
+autocmd BufNewFile,BufRead *.s call SetMIPSOptions()
+
+function SetMIPSOptions()
+	setlocal filetype=mips
+	setlocal tabstop=4
+endfunction
 
 
 " ======================
@@ -108,9 +119,10 @@ if !exists("g:UltiSnipsJumpForwardTrigger")
 	let g:UltiSnipsJumpForwardTrigger = "<tab>"
 endif
 
-" Add Go import and Format on save
-let g:go_fmt_command="goimports"
-
+" Golang: Use goimports instead of gofmt
+if !exists("g:go_fmt_command")
+	let g:go_fmt_command = "goimports"
+endif
 " Gitv Horizontal display
 let Gitv_OpenHorizontal =1 
 
