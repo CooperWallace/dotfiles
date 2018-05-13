@@ -69,6 +69,8 @@ Plug 'Chiel92/vim-autoformat'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 
+Plug 'vimwiki/vimwiki'
+
 " Theme and Color Schemes
 Plug 'junegunn/goyo.vim'                  " Distraction free editting
 Plug 'dikiaap/minimalist'                 " Minimalist Color Scheme
@@ -80,6 +82,7 @@ call plug#end()
 " Theme Specific
 " ======================
 set background =dark " Needed for Tmux
+colorscheme gruvbox
 
 " Goyo Background workaround
 " Without the light theme will be applied on exit
@@ -131,3 +134,6 @@ set laststatus =2
 
 " Disable Typescript Vim indent
 let g:typescript_indent_disable =1
+
+" vimwiki options for gdrive folder
+let g:vimwiki_list = [{'path': '~/grive/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
