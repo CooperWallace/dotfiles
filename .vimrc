@@ -136,4 +136,5 @@ set laststatus =2
 let g:typescript_indent_disable =1
 
 " vimwiki options for gdrive folder
-let g:vimwiki_list = [{'path': '~/grive/vimwiki/', 'syntax': 'markdown', 'ext': '.md'}]
+let g:vimwiki_list = [{'path': '~/grive/vimwiki/personal', 'syntax': 'markdown', 'ext': '.md'}, {'path': '~/grive/vimwiki/work', 'syntax': 'markdown', 'ext': '.md'}]
+let g:vimwiki_global_ext =0
