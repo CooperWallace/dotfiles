@@ -73,6 +73,7 @@ Plug 'vimwiki/vimwiki'
 
 " Theme and Color Schemes
 Plug 'junegunn/goyo.vim'                  " Distraction free editting
+Plug 'mikewest/vimroom'
 Plug 'dikiaap/minimalist'                 " Minimalist Color Scheme
 Plug 'morhetz/gruvbox'
 call plug#end()
