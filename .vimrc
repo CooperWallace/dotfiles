@@ -28,17 +28,15 @@ set directory=$HOME/.vim/misc/swap//
 
 " Sudo Save
 cmap w!! w !sudo tee > /dev/null %
-
+" Bind Q W to save quit
+command! Q q " Bind :Q to :q
+command! W w " Bind :W to :w
 " Navigation Keys
 map <C-Left> :tabprevious<CR>
 map <C-Right> :tabnext<CR>
 map <C-n> :tabnew<CR>
 nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
 nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
-
-" Compile single file C Program
-map <F8> :w <CR> :!clear <CR>:!gcc -Wall -ansi % -o %< && ./%<<CR>
-
 
 " ======================
 " Begin loading Plugins
@@ -51,6 +49,8 @@ Plug 'jiangmiao/auto-pairs'				  " Auto close pairs of brackets
 " Ultisnips and the snippet files
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+" Auto complete with function prototypes
+Plug 'Valloric/YouCompleteMe'
 
 " Tool Support
 Plug 'tpope/vim-fugitive'                 " Git support
@@ -118,9 +118,14 @@ map <C-o> :NERDTreeToggle<CR>
 let NERDTreeQuitOnOpen =1
 
 "Better next placeholder
-if !exists("g:UltiSnipsJumpForwardTrigger")
-	let g:UltiSnipsJumpForwardTrigger = "<tab>"
-endif
+"if !exists("g:UltiSnipsJumpForwardTrigger")
+"	let g:UltiSnipsJumpForwardTrigger = "<tab>"
+"endif
+let g:UltiSnipsExpandTrigger="<c-j>"
+
+
+" Remove Preview from YCM
+set completeopt-=preview
 
 " Golang: Use goimports instead of gofmt
 if !exists("g:go_fmt_command")
