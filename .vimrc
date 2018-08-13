@@ -1,29 +1,31 @@
 " ======================
 " General/ Quality of Life
 " ======================
+
 set scrolloff =5
 set autoindent
 set number
 set t_Co=256
-syntax enable 
-
-set tabstop =4
-set shiftwidth =4
-
+syntax enable
+set nocompatible
+set backspace=indent,eol,start
+set exrc
+set tabstop=4
+set shiftwidth=4
 filetype plugin on
 filetype indent on
+set secure
+set background=dark
 
-" Maintain undo history between sessions
 set undofile
 set undodir=~/.vim/misc/undo
-
-" Move swap files to a seperate directory for
-" cleaner working directories
 set directory=$HOME/.vim/misc/swap//
 
+" Remove all tralling whitespace on save.
+autocmd BufWritePre * %s/\s\+$//e
 
 " ======================
-" Set Key Bindings
+" Key Mapping
 " ======================
 
 " Sudo Save
@@ -38,109 +40,106 @@ map <C-n> :tabnew<CR>
 nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
 nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
 
+nmap <leader>lr <plug>(vimtex-env-change)
+
 " ======================
-" Begin loading Plugins
+" Plugins
 " ======================
+
 call plug#begin('~/.vim/plugged')
-Plug 'scrooloose/nerdtree'                " File Browser
-Plug 'vim-scripts/Align'                  " Alignment plugin
-Plug 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-Plug 'jiangmiao/auto-pairs'				  " Auto close pairs of brackets
-" Ultisnips and the snippet files
+" Tools
+Plug 'scrooloose/nerdtree'
+Plug 'vim-scripts/Align'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-" Auto complete with function prototypes
 Plug 'Valloric/YouCompleteMe'
-
-" Tool Support
-Plug 'tpope/vim-fugitive'                 " Git support
-Plug 'gregsexton/gitv', {'on': ['Gitv']}  " Git log support
-
-Plug 'mhinz/vim-startify'
-
-" Language Support
-Plug 'leafgarland/typescript-vim'         " Typescript Syntax support
-Plug 'fatih/vim-go'                       " Golang development plugin
-Plug 'lervag/vimtex'                      " LaTeX plugin
-Plug 'abby-walz/bullet_journal'           " Bullet Journal Plugin
-Plug 'reedes/vim-pencil'                  " Vim Writing plugin
+Plug 'tpope/vim-surround'
 Plug 'Chiel92/vim-autoformat'
 
-Plug 'vim-pandoc/vim-pandoc'
+" Language Support
+Plug 'tpope/vim-fugitive'
+Plug 'gregsexton/gitv', {'on': ['Gitv']}
+Plug 'leafgarland/typescript-vim'
+Plug 'fatih/vim-go'
+Plug 'lervag/vimtex'
+Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 
+" Prose related
+Plug 'abby-walz/bullet_journal'
+Plug 'reedes/vim-pencil'
+Plug 'vim-pandoc/vim-pandoc'
 Plug 'vimwiki/vimwiki'
+Plug 'mattn/calendar-vim'
 
-" Theme and Color Schemes
-Plug 'junegunn/goyo.vim'                  " Distraction free editting
+" Look and Feel
+Plug 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+Plug 'junegunn/goyo.vim'
 Plug 'mikewest/vimroom'
+
+" Color Schemes
 Plug 'dikiaap/minimalist'                 " Minimalist Color Scheme
 Plug 'morhetz/gruvbox'
 call plug#end()
 
-
 " ======================
-" Theme Specific
-" ======================
-set background =dark " Needed for Tmux
-colorscheme gruvbox
-
-" Goyo Background workaround
-" Without the light theme will be applied on exit
-autocmd! User GoyoLeave
-autocmd  User GoyoLeave nested set background=dark
-
-" ======================
-" Notetaking Options
+" Prose / Notetaking
 " ======================
 
 " Markdown Rendering to file on save
-" 	Output to a default file, so that we don't have a bunch of pdf files
-" 	everywhere (~/default.pdf)
 "autocmd BufWritePost *.md !pandoc -H ~/.pandoc/header.tex -o ~/default.pdf "%:p"
-
 " Automatically use SoftPencil when opening a markdown file
 autocmd	BufNewFile,BufRead *.md SoftPencil
 
-" MIPS
-autocmd BufNewFile,BufRead *.s call SetMIPSOptions()
+" =====================
+" Functions
+" =====================
 
-function SetMIPSOptions()
+function! SetMIPSOptions()
 	setlocal filetype=mips
 	setlocal tabstop=4
 endfunction
 
-
+autocmd BufNewFile,BufRead *.s call SetMIPSOptions()
 " ======================
 " Plugin Specific Options
 " ======================
-" NERD Tree
+
+colorscheme gruvbox
+
 map <C-o> :NERDTreeToggle<CR>
 let NERDTreeQuitOnOpen =1
 
-"Better next placeholder
-"if !exists("g:UltiSnipsJumpForwardTrigger")
-"	let g:UltiSnipsJumpForwardTrigger = "<tab>"
-"endif
+" Ctrl-J Expand snippets
 let g:UltiSnipsExpandTrigger="<c-j>"
 
+" F10 opens Goyo, Leaving resets colours
+map <F10> :Goyo<CR>:SoftPencil<CR>
+autocmd! User GoyoLeave
+autocmd  User GoyoLeave nested set background=dark
+
+" Add functionality to vim.surround for LaTeX delimiters.
+" https://github.com/tpope/vim-surround/issues/47
+let g:surround_{char2nr('c')} = "\\\1command\1{\r}"
 
 " Remove Preview from YCM
 set completeopt-=preview
 
-" Golang: Use goimports instead of gofmt
+" Use goimports instead of gofmt
 if !exists("g:go_fmt_command")
 	let g:go_fmt_command = "goimports"
 endif
-" Gitv Horizontal display
-let Gitv_OpenHorizontal =1 
 
-" Airline
+" Change Vertical to Horizontal Gitv
+let Gitv_OpenHorizontal =1
+
+" Status bar
 set laststatus =2
 
-" Disable Typescript Vim indent
 let g:typescript_indent_disable =1
 
-" vimwiki options for gdrive folder
+" Vimwiki is only usable in Google Drive folder.
 let g:vimwiki_list = [{'path': '~/grive/vimwiki/personal', 'syntax': 'markdown', 'ext': '.md'}, {'path': '~/grive/vimwiki/work', 'syntax': 'markdown', 'ext': '.md'}]
 let g:vimwiki_global_ext =0
+
+
