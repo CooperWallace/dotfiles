@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# pandocWatch
+#
+# Watches the markdown file (*.md) specified, and compiles it using
+# Pandoc on each save.
+#
+
+INPUT="$@"
+OUTPUT=~/default.pdf
+FLAGS='--listings -H /home/cooper/.pandoc/header.tex'
+
+if [ -z "$INPUT" ]; then
+	echo "Error: Missing filename argument"
+	echo "You must specify a markdown file for pandocWatch to use."
+	exit 1
+fi
+
+# Verify that file exists
+if [ ! -f $1 ]; then
+    echo "Error: Specified file not found"
+    exit 1
+fi
+
+
+if [ "${INPUT##*.}" != "md" ]; then
+	echo "Error: pandocWatch can only be used on Markdown (.md) files."
+	exit 1
+fi
+
+# Trigger an initial run
+pandoc $FLAGS -o $OUTPUT "$@"
+
+# Continuously compile on save
+while true; do
+	inotifywait -e modify "$@"
+	pandoc $FLAGS -o $OUTPUT "$@"
+done
+
