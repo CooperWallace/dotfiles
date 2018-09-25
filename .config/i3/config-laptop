@@ -15,10 +15,14 @@ font pango: Source Code Pro 10, FontAwesome 10
 
 for_window [class="^.*"] border pixel 0
 
-gaps inner 5 
+gaps inner 5
 gaps outer 5
 
 smart_borders on
+
+focus_follows_mouse yes
+# Mouse Sensitivity
+exec "/home/cooper/bin/set_mouse_options.sh"
 
 #--- Window Managment Settings ---#
 # Remove border on new windows
@@ -95,6 +99,14 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
+# -- STARTUP--
+# Create a dropdown window for a Master Ranger instance
+for_window [class="RangerDropdown"] floating enable
+for_window [class="RangerDropdown"] resize set 825 500
+for_window [class="RangerDropdown"] move scratchpad
+for_window [class="RangerDropdown"] border pixel 5
+# Starts a terminal with the Ranger filebrowser for easy reusability
+exec --no-startup-id gnome-terminal --class=RangerDropdown -e ranger
 
 #--- Mode Initialiations ---#
 # Resize window mode (you can also use the mouse for that)
@@ -199,6 +211,9 @@ bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+e exec "nautilus --no-desktop"
 bindsym $mod+d exec rofi -show run
 
+#--- Dropdown Terminal Binds ---#
+# Launch dropdown if closed; toggle scratchpad
+bindsym $mod+u exec "dropdown"; [class="RangerDropdown"] scratchpad show; [class="RangerDropdown"] move position center
 
 #--- Command Binds ---#
 bindsym $mod+p exec "dm-tool lock"
@@ -209,6 +224,9 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
+# Kill X shortcut
+bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
+
 # next/prev workspace (./,)
 bindcode $mod+60 workspace next
 bindcode $mod+59 workspace prev
@@ -216,12 +234,23 @@ bindcode $mod+59 workspace prev
 # Screen Brightness
 bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightness
+# Keyboard Backlight
+bindsym XF86KbdBrightnessDown exec --no-startup-id python3.6 ~/.config/i3/kb-lights.py -
+bindsym XF86KbdBrightnessUp	exec --no-startup-id python3.6 ~/.config/i3/kb-lights.py +
 
 #--- Media key binds ---#
 ## Laptop specific. No dedicated media keys
 bindsym $mod+Ctrl+space "exec playerctl play-pause & exec cmus-remote -u"
+bindsym $mod+Ctrl+Right "exec playerctl next"
+bindsym $mod+Ctrl+Left "exec playerctl previous"
+
+#--- Media key binds ---#
+bindsym XF86AudioPlay "exec playerctl play-pause & exec cmus-remote -u"
+bindsym XF86AudioPause "exec playerctl stop & exec cmus-remote -s"
+bindsym XF86AudioNext "exec playerctl next & exec cmus-remote -n"
+bindsym XF86AudioPrev "exec playerctl previous & exec cmus-remote -r"
 
 #--- Audio key binds ---#
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% 
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
