@@ -1,0 +1,9 @@
+#!/bin/bash
+# Start Dropdown Terminal if it doesnt already exist
+
+pids=$(xdotool search --class "RangerDropdown")
+
+if [[ -z $pids ]]
+then
+	gnome-terminal --class=RangerDropdown -e ranger &
+fi
