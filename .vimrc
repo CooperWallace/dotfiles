@@ -40,7 +40,16 @@ map <C-n> :tabnew<CR>
 nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
 nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
 
+" Change LaTeX environment
 nmap <leader>lr <plug>(vimtex-env-change)
+
+"allows shift up and shift down to move lines
+nnoremap <S-up> :m .-2<CR>==
+nnoremap <S-down> :m .+1<CR>==
+inoremap <S-up> <Esc>:m .-2<CR>==gi
+inoremap <S-down> <Esc>:m .+1<CR>==gi
+vnoremap <S-up> :m '<-2<CR>gv=gv
+vnoremap <S-down> :m '>+1<CR>gv=gv
 
 " ======================
 " Plugins
@@ -55,6 +64,8 @@ Plug 'honza/vim-snippets'
 Plug 'Valloric/YouCompleteMe'
 Plug 'tpope/vim-surround'
 Plug 'Chiel92/vim-autoformat'
+Plug '907th/vim-auto-save'				" Autosave on Insertion change
+Plug 'ctrlpvim/ctrlp.vim'
 
 " Language Support
 Plug 'tpope/vim-fugitive'
@@ -64,6 +75,7 @@ Plug 'fatih/vim-go'
 Plug 'lervag/vimtex'
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'vivien/vim-linux-coding-style'
 
 " Prose related
 Plug 'abby-walz/bullet_journal'
@@ -101,6 +113,7 @@ function! SetMIPSOptions()
 endfunction
 
 autocmd BufNewFile,BufRead *.s call SetMIPSOptions()
+
 " ======================
 " Plugin Specific Options
 " ======================
