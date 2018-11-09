@@ -1,0 +1,10 @@
+set selection-clipboard clipboard
+
+# Controls
+map <Right> navigate next
+map <Left> navigate previous
+
+# Hide Bars
+set guioptions ""
+
+
