@@ -1,22 +1,23 @@
-" ======================
-" General/ Quality of Life
-" ======================
+" ================ General/ Quality of Life ========
+set nocompatible 	" Disable Vi options
+set exrc			" Use Settings in current dir
 
 set scrolloff =5
 set autoindent
 set number
-set t_Co=256
-syntax enable
-set nocompatible
-set backspace=indent,eol,start
-set exrc
 set tabstop=4
 set shiftwidth=4
+set t_Co=256
+
+syntax enable
 filetype plugin on
 filetype indent on
 set secure
 set background=dark
+set backspace=indent,eol,start
+set laststatus =2 " Status bar
 
+" Persistent undo between sessions
 set undofile
 set undodir=~/.vim/misc/undo
 set directory=$HOME/.vim/misc/swap//
@@ -24,36 +25,34 @@ set directory=$HOME/.vim/misc/swap//
 " Remove all tralling whitespace on save.
 autocmd BufWritePre * %s/\s\+$//e
 
-" ======================
-" Key Mapping
-" ======================
+" ================ Key Mapping ====================
+" ================ General/ Quality of Life ========
 
 " Sudo Save
 cmap w!! w !sudo tee > /dev/null %
-" Bind Q W to save quit
+
 command! Q q " Bind :Q to :q
 command! W w " Bind :W to :w
+
 " Navigation Keys
-map <C-Left> :tabprevious<CR>
-map <C-Right> :tabnext<CR>
-map <C-n> :tabnew<CR>
+noremap <C-Left> :tabprevious<CR>
+noremap <C-Right> :tabnext<CR>
+noremap <C-n> :tabnew<CR>
+
+" Move Tabs left/right using Alt
 nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
 nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
 
-" Change LaTeX environment
+" Return to normal mode when pressing jj
+" Avoid pressing escape which is out of the way
+" From 'Learn Vimscript the hard way'.
+inoremap jk <esc>
+
+" Change the surrounding LaTeX environment
 nmap <leader>lr <plug>(vimtex-env-change)
 
-"allows shift up and shift down to move lines
-nnoremap <S-up> :m .-2<CR>==
-nnoremap <S-down> :m .+1<CR>==
-inoremap <S-up> <Esc>:m .-2<CR>==gi
-inoremap <S-down> <Esc>:m .+1<CR>==gi
-vnoremap <S-up> :m '<-2<CR>gv=gv
-vnoremap <S-down> :m '>+1<CR>gv=gv
 
-" ======================
-" Plugins
-" ======================
+" ================ Plugins =======================
 
 call plug#begin('~/.vim/plugged')
 " Tools
@@ -65,7 +64,7 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'tpope/vim-surround'
 Plug 'Chiel92/vim-autoformat'
 Plug '907th/vim-auto-save'				" Autosave on Insertion change
-Plug 'ctrlp/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 
 " Language Support
 Plug 'tpope/vim-fugitive'
@@ -76,6 +75,7 @@ Plug 'lervag/vimtex'
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'vivien/vim-linux-coding-style'
+Plug 'nathanaelkane/vim-indent-guides'
 
 " Prose related
 Plug 'abby-walz/bullet_journal'
@@ -94,72 +94,70 @@ Plug 'dikiaap/minimalist'                 " Minimalist Color Scheme
 Plug 'morhetz/gruvbox'
 call plug#end()
 
-" ======================
-" Prose / Notetaking
-" ======================
+
+" ================ Notetaking ====================
 
 " Markdown Rendering to file on save
 "autocmd BufWritePost *.md !pandoc -H ~/.pandoc/header.tex -o ~/default.pdf "%:p"
-" Automatically use SoftPencil when opening a markdown file
+
+" Toggle SoftPencil when opening a markdown file
 autocmd	BufNewFile,BufRead *.md SoftPencil
 
-" =====================
-" Functions
-" =====================
-
-function! SetMIPSOptions()
-	setlocal filetype=mips
-	setlocal tabstop=4
-endfunction
-
-autocmd BufNewFile,BufRead *.s call SetMIPSOptions()
-
-" ======================
-" Plugin Specific Options
-" ======================
-
-colorscheme gruvbox
-
-map <C-o> :NERDTreeToggle<CR>
-let NERDTreeQuitOnOpen =1
-
-" make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
-
-" Ctrl-J Expand snippets
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+" Enable vimtex usage in Markdown files.
+autocmd	BufNewFile,BufRead *.md call vimtex#init()
 
 " F10 opens Goyo, Leaving resets colours
 map <F10> :Goyo<CR>:SoftPencil<CR>
+
+" Reset colorscheme when leaving Goyo
 autocmd! User GoyoLeave
 autocmd  User GoyoLeave nested set background=dark
+
+
+" ================ Plugin Settings ==============
+"
+colorscheme gruvbox 					" Use Gruvbox Colour Scheme
+
+" Map openning NERDTree to Ctrl-O
+noremap <C-o> :NERDTreeToggle<CR>
+let NERDTreeQuitOnOpen =1				" Don't close pane after opening file
 
 " Add functionality to vim.surround for LaTeX delimiters.
 " https://github.com/tpope/vim-surround/issues/47
 let g:surround_{char2nr('c')} = "\\\1command\1{\r}"
 
-" Remove Preview from YCM
-set completeopt-=preview
-
-" Use goimports instead of gofmt
 if !exists("g:go_fmt_command")
-	let g:go_fmt_command = "goimports"
+	let g:go_fmt_command = "goimports"	" Use goimports instead of gofmt
 endif
 
-" Change Vertical to Horizontal Gitv
-let Gitv_OpenHorizontal =1
+let Gitv_OpenHorizontal =1 				" Change Vertical to Horizontal Gitv
 
-" Status bar
-set laststatus =2
+let g:typescript_indent_disable =1		" Disable autoindent in Typescript
 
-let g:typescript_indent_disable =1
 
+" === YCM / Ultisnippets ====
+
+" Remove Preview window from YCM
+set completeopt-=preview
+
+" make YCM compatible with UltiSnips (using supertab), by
+" removing the default <tab> binding
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" Expand UltiSnippets by using the <tab> key
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+" === Vimwiki ===
+
+let g:vimwiki_global_ext =0 " Disable vimwiki in all folders
 " Vimwiki is only usable in Google Drive folder.
-let g:vimwiki_list = [{'path': '~/grive/vimwiki/personal', 'syntax': 'markdown', 'ext': '.md'}, {'path': '~/grive/vimwiki/work', 'syntax': 'markdown', 'ext': '.md'}]
-let g:vimwiki_global_ext =0
+let g:vimwiki_list = [
+			\{'path': '~/grive/vimwiki/personal', 'syntax': 'markdown', 'ext': '.md'},
+			\{'path': '~/grive/vimwiki/work', 'syntax': 'markdown', 'ext': '.md'}
+			\]
 
 
