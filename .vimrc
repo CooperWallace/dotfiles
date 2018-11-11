@@ -1,4 +1,5 @@
-" ================ General/ Quality of Life ========
+" vim: set fdm=marker:
+" General/ Quality of Life {{{
 set nocompatible 	" Disable Vi options
 set exrc			" Use Settings in current dir
 
@@ -25,8 +26,8 @@ set directory=$HOME/.vim/misc/swap//
 " Remove all tralling whitespace on save.
 autocmd BufWritePre * %s/\s\+$//e
 
-" ================ Key Mapping ====================
-" ================ General/ Quality of Life ========
+" }}}
+" Key Mapping {{{
 
 " Sudo Save
 cmap w!! w !sudo tee > /dev/null %
@@ -47,12 +48,17 @@ nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
 " Avoid pressing escape which is out of the way
 " From 'Learn Vimscript the hard way'.
 inoremap jk <esc>
+inoremap <esc> <nop>
 
 " Change the surrounding LaTeX environment
 nmap <leader>lr <plug>(vimtex-env-change)
 
+" On the fly rc editing, and sourcing
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
 
-" ================ Plugins =======================
+" }}}
+" Plugins {{{
 
 call plug#begin('~/.vim/plugged')
 " Tools
@@ -94,8 +100,8 @@ Plug 'dikiaap/minimalist'                 " Minimalist Color Scheme
 Plug 'morhetz/gruvbox'
 call plug#end()
 
-
-" ================ Notetaking ====================
+" }}}
+" Notetaking {{{
 
 " Markdown Rendering to file on save
 "autocmd BufWritePost *.md !pandoc -H ~/.pandoc/header.tex -o ~/default.pdf "%:p"
@@ -113,9 +119,8 @@ map <F10> :Goyo<CR>:SoftPencil<CR>
 autocmd! User GoyoLeave
 autocmd  User GoyoLeave nested set background=dark
 
-
-" ================ Plugin Settings ==============
-"
+" }}}
+" Plugin Settings {{{
 colorscheme gruvbox 					" Use Gruvbox Colour Scheme
 
 " Map openning NERDTree to Ctrl-O
@@ -161,3 +166,4 @@ let g:vimwiki_list = [
 			\]
 
 
+" }}}
