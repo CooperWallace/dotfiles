@@ -10,6 +10,8 @@ set tabstop=4
 set shiftwidth=4
 set t_Co=256
 
+set tw=80 " Line width
+
 syntax enable
 filetype plugin on
 filetype indent on
@@ -156,6 +158,9 @@ let Gitv_OpenHorizontal =1 				" Change Vertical to Horizontal Gitv
 
 let g:typescript_indent_disable =1		" Disable autoindent in Typescript
 
+" Use hard break for writing, and 80 char limit
+let g:pandoc#formatting#mode="ha"
+let g:pandoc#formatting#textwidth=80
 
 " === YCM / Ultisnippets ====
 
