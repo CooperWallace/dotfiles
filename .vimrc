@@ -40,6 +40,10 @@ noremap <C-Left> :tabprevious<CR>
 noremap <C-Right> :tabnext<CR>
 noremap <C-n> :tabnew<CR>
 
+" Navigation to beginning / end of lines
+noremap H 0 
+noremap L $
+
 " Move Tabs left/right using Alt
 nnoremap <silent> <A-Left> :execute 'silent! tabmove ' . (tabpagenr()-2)<CR>
 nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
@@ -48,6 +52,7 @@ nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
 " Avoid pressing escape which is out of the way
 " From 'Learn Vimscript the hard way'.
 inoremap jk <esc>
+inoremap JK <esc>
 inoremap <esc> <nop>
 
 " Change the surrounding LaTeX environment
@@ -56,6 +61,14 @@ nmap <leader>lr <plug>(vimtex-env-change)
 " On the fly rc editing, and sourcing
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
+
+" Operation-Pending Mappings
+" http://learnvimscriptthehardway.stevelosh.com/chapters/15.html
+
+" Inside next parentheses
+onoremap in( :<c-u>normal! f(vi)<cr>
+
+
 
 " }}}
 " Plugins {{{
@@ -106,18 +119,22 @@ call plug#end()
 " Markdown Rendering to file on save
 "autocmd BufWritePost *.md !pandoc -H ~/.pandoc/header.tex -o ~/default.pdf "%:p"
 
-" Toggle SoftPencil when opening a markdown file
-autocmd	BufNewFile,BufRead *.md SoftPencil
-
-" Enable vimtex usage in Markdown files.
-autocmd	BufNewFile,BufRead *.md call vimtex#init()
+augroup notetaking
+	autocmd!
+	" Toggle SoftPencil when opening a markdown file
+	autocmd	BufNewFile,BufRead *.md SoftPencil
+	" Enable vimtex usage in Markdown files.
+	autocmd	BufNewFile,BufRead *.md call vimtex#init()
+augroup END
 
 " F10 opens Goyo, Leaving resets colours
 map <F10> :Goyo<CR>:SoftPencil<CR>
 
-" Reset colorscheme when leaving Goyo
-autocmd! User GoyoLeave
-autocmd  User GoyoLeave nested set background=dark
+augroup GoyoBGFix
+	" Reset colorscheme when leaving Goyo
+	autocmd! User GoyoLeave
+	autocmd  User GoyoLeave nested set background=dark
+augroup END
 
 " }}}
 " Plugin Settings {{{
