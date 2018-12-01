@@ -1,14 +1,14 @@
 \newenvironment{boxtext} {
+	\vspace{0.5em}
 	\begin{center}
     \begin{tabular}{|p{0.9\textwidth}|}
     \hline\\
     }
-    { 
+    {
     \\\\\hline
-    \end{tabular} 
+    \end{tabular}
     \end{center}
 }
-
 
 
 % Work around to allow Markdown formatting in LaTeX
@@ -45,4 +45,33 @@
 		\includegraphics[page=#3, width=0.32\linewidth, clip]{\LectSlides}
 	}
 	\end{center}
+}
+
+\usepackage{import}
+\usepackage{graphicx}
+
+%% Fancy Code Blocks
+%% Source:
+%%	https://tex.stackexchange.com/questions/179926/pandoc-markdown-to-pdf-without-cutting-off-code-block-lines-that-are-too-long
+\usepackage{xcolor}
+
+\lstset{
+    basicstyle=\ttfamily,
+    numbers=left,
+    numberstyle=\footnotesize,
+    numbersep=5pt,
+	backgroundcolor=\color[RGB]{248,248,248},
+	keywordstyle=\color[rgb]{0.13,0.29,0.53}\bfseries,
+    stringstyle=\color[rgb]{0.31,0.60,0.02},
+    commentstyle=\color[rgb]{0.56,0.35,0.01}\itshape,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=true,
+    breakautoindent=true,
+    linewidth=\textwidth,
+	frame=single
 }
