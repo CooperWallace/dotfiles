@@ -17,7 +17,7 @@ if [ -z "$INPUT" ]; then
 fi
 
 # Verify that file exists
-if [ ! -f $1 ]; then
+if [ ! -f "$@" ]; then
     echo "Error: Specified file not found"
     exit 1
 fi
@@ -29,11 +29,24 @@ if [ "${INPUT##*.}" != "md" ]; then
 fi
 
 # Trigger an initial run
+echo "`date +"%H:%M:%S"` - Processing $INPUT... "
 pandoc $FLAGS -o $OUTPUT "$@"
 
+# Open window for live preview of PDF
+zathura $OUTPUT &
+
 # Continuously compile on save
+echo "`date +"%H:%M:%S"` - Watching $INPUT... "
+
 while true; do
-	inotifywait -e modify "$@"
+	inotifywait -q -e modify "$@"
+	echo "`date +"%H:%M:%S"` - Processing $INPUT... "
 	pandoc $FLAGS -o $OUTPUT "$@"
+
+	if [ $? -eq 0 ]; then
+		echo "Complilation Successful"
+	else
+		echo "Compilation Error"
+	fi
 done
 

@@ -1,0 +1,6 @@
+# Render an entire folder of files to the output/ directory.
+
+for f in *.md; do
+	pandoc --listings -H ~/.pandoc/header.tex "${f}" -o "output/${f%.*}.pdf";
+	echo ${f};
+done
