@@ -55,7 +55,10 @@ nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
 " From 'Learn Vimscript the hard way'.
 inoremap jk <esc>
 inoremap JK <esc>
-inoremap <esc> <nop>
+
+" Fix paste bug triggered by the above inoremaps
+" https://github.com/johndgiese/dotvim/issues/4
+set t_BE=
 
 " Change the surrounding LaTeX environment
 nmap <leader>lr <plug>(vimtex-env-change)
@@ -150,6 +153,9 @@ let NERDTreeQuitOnOpen =1				" Don't close pane after opening file
 " https://github.com/tpope/vim-surround/issues/47
 let g:surround_{char2nr('c')} = "\\\1command\1{\r}"
 
+" Add surround for markdown bold **word**
+let g:surround_{char2nr('o')} = "**\r**"
+
 if !exists("g:go_fmt_command")
 	let g:go_fmt_command = "goimports"	" Use goimports instead of gofmt
 endif
@@ -159,7 +165,7 @@ let Gitv_OpenHorizontal =1 				" Change Vertical to Horizontal Gitv
 let g:typescript_indent_disable =1		" Disable autoindent in Typescript
 
 " Use hard break for writing, and 80 char limit
-let g:pandoc#formatting#mode="ha"
+let g:pandoc#formatting#mode="h"
 let g:pandoc#formatting#textwidth=80
 
 " === YCM / Ultisnippets ====
