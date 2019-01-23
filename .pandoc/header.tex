@@ -1,3 +1,31 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pandoc Header file
+%
+% Contains all my custom options to extend the default pandoc header
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Additional Packages
+
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{geometry} 	% Change margin geometry
+\geometry{margin=1in}
+
+\usepackage{mhchem} 	% Chemical environment for Nuclear Notation
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom macros are defined in the 'customMacros.tex' file
+% subimport needs to be used for Absolute paths
+
+% Math Macros
+\usepackage{import}
+\IfFileExists{/home/cooper/.pandoc/customMacros.tex}
+	{\subimport{/home/cooper/.pandoc/}{customMacros.tex}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom Environments
+
 \newenvironment{boxtext} {
 	\vspace{0.5em}
 	\begin{center}
@@ -9,8 +37,6 @@
     \end{tabular}
     \end{center}
 }
-
-
 % Work around to allow Markdown formatting in LaTeX
 \newcommand{\hideFromPandoc}[1]{#1}
 \hideFromPandoc{
@@ -19,30 +45,8 @@
 }
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Math Macros
-
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\N}{\mathbb{I\!N}}
-\newcommand{\powerset}{\mathcal{P}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Geometry Settings
-
-\usepackage{geometry}
-\geometry{margin=1in}
-
-% Chemical environment for Nuclear Notation
-\usepackage{mhchem}
-
-% Add extra stuff to header
-% \IfFileExists{settings.tex}{\input{settings.tex}}{}
-
 % This is a macro to include lecture slides inside of my notes
 % to avoid repeating them
-
-\usepackage{pdfpages}
 
 % Nice command to define lecture slide location
 \newcommand{\noteSlides}[1] {
@@ -67,13 +71,10 @@
 	\end{center}
 }
 
-\usepackage{import}
-\usepackage{graphicx}
 
 %% Fancy Code Blocks
 %% Source:
 %%	https://tex.stackexchange.com/questions/179926/pandoc-markdown-to-pdf-without-cutting-off-code-block-lines-that-are-too-long
-\usepackage{xcolor}
 
 \lstset{
     basicstyle=\ttfamily,
