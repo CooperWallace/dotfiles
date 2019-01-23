@@ -15,12 +15,12 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom macros are defined in the 'customMacros.tex' file
-% subimport needs to be used for Absolute paths
+% import needs to be used for file path outside cwd
 
 % Math Macros
 \usepackage{import}
 \IfFileExists{/home/cooper/.pandoc/customMacros.tex}
-	{\subimport{/home/cooper/.pandoc/}{customMacros.tex}}
+	{\import{/home/cooper/.pandoc/}{customMacros.tex}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
