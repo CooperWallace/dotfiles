@@ -157,8 +157,8 @@ endsnippet
 
 snippet header "Document heaer"
 ---
-header-title: ${1:Title}
-header-author: ${2:Cooper Wallace}
+header-title: `!v expand('%:t:r')`
+headerauthor: Cooper Wallace
 header-date: `date "+%b %-e %Y"`
 geometry: margin=1in
 ---
