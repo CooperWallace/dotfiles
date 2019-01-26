@@ -73,8 +73,6 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 " Inside next parentheses
 onoremap in( :<c-u>normal! f(vi)<cr>
 
-
-
 " }}}
 " Plugins {{{
 
@@ -93,20 +91,21 @@ Plug 'ctrlpvim/ctrlp.vim'
 " Language Support
 Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv', {'on': ['Gitv']}
-Plug 'leafgarland/typescript-vim'
-Plug 'fatih/vim-go'
-Plug 'lervag/vimtex'
+"Plug 'leafgarland/typescript-vim'
+"Plug 'fatih/vim-go'
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'vivien/vim-linux-coding-style'
 Plug 'nathanaelkane/vim-indent-guides'
 
 " Prose related
-Plug 'abby-walz/bullet_journal'
-Plug 'reedes/vim-pencil'
-Plug 'vim-pandoc/vim-pandoc'
-Plug 'vimwiki/vimwiki'
-Plug 'mattn/calendar-vim'
+Plug 'reedes/vim-pencil'				" Wrap line properly, Writing in VIM
+Plug 'vim-pandoc/vim-pandoc'			" Pandoc Options
+Plug 'vimwiki/vimwiki'					" Personal Wiki
+Plug 'lervag/vimtex'					" LaTeX extension
+Plug 'reedes/vim-litecorrect'			" Fix common typos
+Plug 'kana/vim-textobj-user'			" textobj-sentence dep
+Plug 'reedes/vim-textobj-sentence'		" Treat senteces as text objects
 
 " Look and Feel
 Plug 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
@@ -130,6 +129,15 @@ augroup notetaking
 	autocmd	BufNewFile,BufRead *.md SoftPencil
 	" Enable vimtex usage in Markdown files.
 	autocmd	BufNewFile,BufRead *.md call vimtex#init()
+	autocmd	BufNewFile,BufRead *.md call litecorrect#init()
+	autocmd	BufNewFile,BufRead *.md call textobj#sentence#init()
+augroup END
+
+" Abbreciations to use when writing math equations
+augroup tex_math_abbrev
+	autocmd!
+	autocmd FileType *.md iab <buffer> `l \lambda
+	autocmd FileType *.md iab <buffer> `L \Lambda
 augroup END
 
 " F10 opens Goyo, Leaving resets colours
