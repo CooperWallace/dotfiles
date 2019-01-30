@@ -66,6 +66,7 @@ nmap <leader>lr <plug>(vimtex-env-change)
 " On the fly rc editing, and sourcing
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>ss :call UltiSnips#RefreshSnippets()<cr>
 
 " Operation-Pending Mappings
 " http://learnvimscriptthehardway.stevelosh.com/chapters/15.html
@@ -133,13 +134,6 @@ augroup notetaking
 	autocmd	BufNewFile,BufRead *.md call textobj#sentence#init()
 augroup END
 
-" Abbreciations to use when writing math equations
-augroup tex_math_abbrev
-	autocmd!
-	autocmd FileType *.md iab <buffer> `l \lambda
-	autocmd FileType *.md iab <buffer> `L \Lambda
-augroup END
-
 " F10 opens Goyo, Leaving resets colours
 map <F10> :Goyo<CR>:SoftPencil<CR>
 
@@ -150,33 +144,45 @@ augroup GoyoBGFix
 augroup END
 
 " }}}
-" Plugin Settings {{{
+" Plugin Settings {{{1
 colorscheme gruvbox 					" Use Gruvbox Colour Scheme
 
+" NERD Tree {{{2
 " Map openning NERDTree to Ctrl-O
 noremap <C-o> :NERDTreeToggle<CR>
 let NERDTreeQuitOnOpen =1				" Don't close pane after opening file
+" }}}2
 
+" Vim-Surround {{{2
 " Add functionality to vim.surround for LaTeX delimiters.
 " https://github.com/tpope/vim-surround/issues/47
 let g:surround_{char2nr('c')} = "\\\1command\1{\r}"
 
 " Add surround for markdown bold **word**
 let g:surround_{char2nr('o')} = "**\r**"
+" }}}2
 
+" Go Format {{{2
 if !exists("g:go_fmt_command")
 	let g:go_fmt_command = "goimports"	" Use goimports instead of gofmt
 endif
+" }}}2
 
+"Gitv {{{2
 let Gitv_OpenHorizontal =1 				" Change Vertical to Horizontal Gitv
+"}}} 2
 
+" Typescript {{{2
 let g:typescript_indent_disable =1		" Disable autoindent in Typescript
+" }}}2
 
+" {{{2 Pandoc
 " Use hard break for writing, and 80 char limit
 let g:pandoc#formatting#mode="h"
 let g:pandoc#formatting#textwidth=80
+" }}}2
 
-" === YCM / Ultisnippets ====
+" YCM / Ultisnippets {{{2
 
 " Remove Preview window from YCM
 set completeopt-=preview
@@ -192,7 +198,10 @@ let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
-" === Vimwiki ===
+let g:UltiSnipsSnippetDirectories=["~/.vim/UltiSnips/", "UltiSnips"]
+" }}}2
+
+" Vimwiki {{{2
 
 let g:vimwiki_global_ext =0 " Disable vimwiki in all folders
 " Vimwiki is only usable in Google Drive folder.
@@ -201,5 +210,5 @@ let g:vimwiki_list = [
 			\{'path': '~/grive/vimwiki/work', 'syntax': 'markdown', 'ext': '.md'}
 			\]
 
-
-" }}}
+" }}}2
+" }}}1

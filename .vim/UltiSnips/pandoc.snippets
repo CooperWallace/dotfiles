@@ -1,26 +1,23 @@
-priority -50
+# Custom Snippets for Pandoc
+# 	Personal snippets defined to extend Pandoc
+#
+# Author: Cooper Wallace
+
+################################################################################
+
+# Include pre-defined snippets in vim-snippets
+extends markdown
+extends tex
+
+# overwrite if necessary
+priority -49
+
+################################################################################
+# Global Snippets
 
 global !p
-def create_table(snip):
-    # retrieving single line from current string and treat it like tabstops count
-    placeholders_string = snip.buffer[snip.line].strip()[2:].split("x",1)
-    rows_amount = int(placeholders_string[0])
-    columns_amount = int(placeholders_string[1])
 
-    # erase current line
-    snip.buffer[snip.line] = ''
-
-    # create anonymous snippet with expected content and number of tabstops
-    anon_snippet_title = ' | '.join(['$' + str(col) for col in range(1,columns_amount+1)]) + "\n"
-    anon_snippet_delimiter = ':-|' * (columns_amount-1) + ":-\n"
-    anon_snippet_body = ""
-    for row in range(1,rows_amount+1):
-        anon_snippet_body += ' | '.join(['$' + str(row*columns_amount+col) for col in range(1,columns_amount+1)]) + "\n"
-    anon_snippet_table = anon_snippet_title + anon_snippet_delimiter + anon_snippet_body
-
-    # expand anonymous snippet
-    snip.expand_anon(anon_snippet_table)
-
+# Define a Python script to create a matrix in Math Mode
 # source
 # https://vi.stackexchange.com/questions/17439/easiest-way-to-insert-latex-matrix/17443
 def create_matrix(snip):
@@ -58,77 +55,10 @@ pre_expand "create_matrix(snip)"
 snippet "(small|[bBpvV])?mat(rix)?(\d+)x(\d+)" "Generate (small|[bBpvV])?matrix of *rows* by *columns*" br
 endsnippet
 
-###########################
-# Sections and Paragraphs #
-###########################
-snippet sec "Section" b
-# ${1:Section Name} #
-$0
-endsnippet
-
-snippet ssec "Sub Section" b
-## ${1:Section Name} ##
-$0
-endsnippet
-
-snippet sssec "SubSub Section" b
-### ${1:Section Name} ###
-$0
-endsnippet
-
-snippet par "Paragraph" b
-#### ${1:Paragraph Name} ####
-$0
-endsnippet
-
-snippet spar "Paragraph" b
-##### ${1:Paragraph Name} #####
-$0
-endsnippet
-
-################
-# Common stuff #
-################
-snippet link "Link to something"
-[${1:${VISUAL:Text}}](${3:http://${2:www.url.com}})$0
-endsnippet
-
-snippet img "Image"
-![${1:pic alt}](${2:path}${3/.+/ "/}${3:opt title}${3/.+/"/})$0
-endsnippet
-
-snippet ilc "Inline Code" i
-\`$1\`$0
-endsnippet
-
-snippet cbl "Codeblock" b
-\`\`\`
-$1
-\`\`\`
-$0
-endsnippet
-
-snippet refl "Reference Link"
-[${1:${VISUAL:Text}}][${2:id}]$0
-
-[$2]:${4:http://${3:www.url.com}} "${5:$4}"
-endsnippet
-
-snippet fnt "Footnote"
-[^${1:${VISUAL:Footnote}}]$0
-
-[^$1]:${2:Text}
-endsnippet
-
-pre_expand "create_table(snip)"
-snippet "tb(\d+x\d+)" "Customizable table" br
-endsnippet
-
 ################################################################################
+# MISC Snippets
 
-# LaTeX Environments
-
-snippet graph "Graph"
+snippet graph "Graph the function specified"
 \begin{tikzpicture}[xscale=.5,yscale=.5]
 \begin{axis}[
 	ymin=-10, ymax=10,
@@ -142,6 +72,9 @@ snippet graph "Graph"
 \end{axis}
 \end{tikzpicture}
 endsnippet
+
+################################################################################
+# LaTeX Environments
 
 snippet ali "Aligned"
 \begin{align*}
@@ -157,13 +90,12 @@ endsnippet
 
 snippet header "Document heaer"
 ---
-header-title: `!v expand('%:t:r')`
-headerauthor: Cooper Wallace
-header-date: `date "+%b %-e %Y"`
-geometry: margin=1in
+header-title: ${1:`!v vim_snippets#Filename('$1', 'title')`}
+header-author: Cooper Wallace
+header-date: `!v strftime("%d %B %Y")`
 ---
 
-
+$0
 endsnippet
 
 snippet text "Equation text"
@@ -171,8 +103,7 @@ snippet text "Equation text"
 endsnippet
 
 ################################################################################
-
-# Document Text Properties
+# Document Text Formatting Snippets
 
 snippet ul "Underline"
 \underline{${1:Text}}
@@ -193,17 +124,7 @@ snippet aside "Aside Text"
 endsnippet
 
 ################################################################################
-
-# LaTeX Math Equation Snippets
-
-snippet peacewise "Peacewise Function"
-$$
-${1:Eqauls} =\begin{cases}
-	1 & n= 0 \\\\
-	n*(n-1) & n\leq 1
-\end{cases}
-$$
-endsnippet
+# LaTeX Math Snippets
 
 snippet frac "Fraction" i
 \frac{${1:1}}{${2:2}}
@@ -231,8 +152,6 @@ $$\begin{cases}
 \end{cases}$$
 endsnippet
 
-snippet matrix "Matrix" i
-\left[\begin{array}{rrr|r}
-${1:} &  ${2:} & ${3:} & ${4:}
-\end{array} \right]
+snippet /\_\_/ "Subscript" riA
+_{$1}$0
 endsnippet
