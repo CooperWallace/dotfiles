@@ -92,7 +92,7 @@ snippet header "Document heaer"
 ---
 header-title: ${1:`!v vim_snippets#Filename('$1', 'title')`}
 header-author: Cooper Wallace
-header-date: `!v strftime("%d %B %Y")`
+header-date: `!v strftime("%b %-e %Y")`
 ---
 
 $0
@@ -152,6 +152,26 @@ $$\begin{cases}
 \end{cases}$$
 endsnippet
 
+snippet ce "Chemical Equations" i
+\ce{^${1}_${2} ${3}}
+endsnippet
+
+# Subscripts
+
 snippet /\_\_/ "Subscript" riA
 _{$1}$0
+endsnippet
+
+snippet /\^\^/ "Superscript" riA
+^{$1}$0
+endsnippet
+
+################################################################################
+# Templates
+## Inspiration from Lervag dotvim
+
+snippet templ_includegraphics "Include a Graphical image" i
+\begin{center}
+	\includegraphics[scale=${1}]{./figures/${2}}
+\end{center}
 endsnippet
