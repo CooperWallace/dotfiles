@@ -124,18 +124,23 @@ call plug#end()
 " Markdown Rendering to file on save
 "autocmd BufWritePost *.md !pandoc -H ~/.pandoc/header.tex -o ~/default.pdf "%:p"
 
-augroup notetaking
-	autocmd!
-	" Toggle SoftPencil when opening a markdown file
-	autocmd	BufNewFile,BufRead *.md SoftPencil
-	" Enable vimtex usage in Markdown files.
-	autocmd	BufNewFile,BufRead *.md call vimtex#init()
-	autocmd	BufNewFile,BufRead *.md call litecorrect#init()
-	autocmd	BufNewFile,BufRead *.md call textobj#sentence#init()
-augroup END
+function! Notetaking()
+	" Pencil with Soft line breaks
+	call pencil#init({"wrap" : "soft"})
 
-" F10 opens Goyo, Leaving resets colours
-map <F10> :Goyo<CR>:SoftPencil<CR>
+	" Disable item character coneal
+	set conceallevel=2
+
+	" Enable vimtex usage in Markdown files.
+	call vimtex#init()
+	call litecorrect#init()
+	call textobj#sentence#init()
+endfunction
+
+autocmd BufNewFile,BufRead *.md call Notetaking()
+
+" Open Goyo and call Notetaking function to fix conceal of listing bullets
+map <F10> :Goyo<CR>:call Notetaking()<CR>
 
 augroup GoyoBGFix
 	" Reset colorscheme when leaving Goyo
