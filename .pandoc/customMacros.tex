@@ -1,11 +1,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Macro commands for note taking
-
+\newcommand{\Rational}{\mathbb{Q}}
 
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Z}{\mathbb{Z}}
-\newcommand{\N}{\mathbb{I\!N}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
 \newcommand{\powerset}{\mathcal{P}}
 
 % Command to create a set
 \newcommand{\set}[1]{\{ #1 \}}
+
+% Circled Numbers
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+	\node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
