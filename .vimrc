@@ -12,6 +12,8 @@ set t_Co=256
 
 set tw=80 " Line width
 
+set scrolloff=5		" Always show 5 lines
+
 syntax enable
 filetype plugin on
 filetype indent on
@@ -74,6 +76,9 @@ nnoremap <leader>ss :call UltiSnips#RefreshSnippets()<cr>
 " Inside next parentheses
 onoremap in( :<c-u>normal! f(vi)<cr>
 
+" Fix next spelling correction
+nnoremap <leader>sc ]s1z=
+
 " }}}
 " Plugins {{{
 
@@ -105,6 +110,7 @@ Plug 'vim-pandoc/vim-pandoc'			" Pandoc Options
 Plug 'vimwiki/vimwiki'					" Personal Wiki
 Plug 'lervag/vimtex'					" LaTeX extension
 Plug 'reedes/vim-litecorrect'			" Fix common typos
+Plug 'panozzaj/vim-autocorrect'			" Larger Typo corrections
 Plug 'kana/vim-textobj-user'			" textobj-sentence dep
 Plug 'reedes/vim-textobj-sentence'		" Treat senteces as text objects
 
@@ -129,12 +135,17 @@ function! Notetaking()
 	call pencil#init({"wrap" : "soft"})
 
 	" Disable item character coneal
-	set conceallevel=2
+	setlocal conceallevel=2
+	" Disable numbers, not needed
+	setlocal nonumber
+	setlocal spell spelllang=en_us
 
 	" Enable vimtex usage in Markdown files.
 	call vimtex#init()
 	call litecorrect#init()
 	call textobj#sentence#init()
+	" Great plugin, but slows down load.
+	" call AutoCorrect()
 endfunction
 
 autocmd BufNewFile,BufRead *.md call Notetaking()
