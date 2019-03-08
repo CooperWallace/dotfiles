@@ -7,4 +7,6 @@ map <Left> navigate previous
 # Hide Bars
 set guioptions ""
 
-
+# Recolor bg to terminal bg
+set recolor-lightcolor "#282828"
+set recolor-darkcolor "#EBDBB2"
