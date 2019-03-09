@@ -1,37 +1,56 @@
 #!/bin/sh
 #
-# pandocWatch
-#
 # Watches the markdown file (*.md) specified, and compiles it using
 # Pandoc on each save.
-#
+
+################################################################################
+# Default Flags to be used
 
 INPUT="$@"
 OUTPUT=~/default.pdf
-FLAGS='--listings -H /home/cooper/.pandoc/header.tex'
 
-if [ -z "$INPUT" ]; then
-	echo "Error: Missing filename argument"
-	echo "You must specify a markdown file for pandocWatch to use."
-	exit 1
-fi
+PANDOC_HEADER="/home/cooper/.pandoc/header.tex" 	# Extension header file
+PANDOC_FLAGS="--listings -H $PANDOC_HEADER"
 
-# Verify that file exists
-if [ ! -f "$@" ]; then
-    echo "Error: Specified file not found"
-    exit 1
-fi
+################################################################################
+
+# Verify the correct file has been given
+verifyFile () {
+	if [ -z "$1" ]; then
+		print_usage
+		echo "Error: Missing filename argument"
+		echo "You must specify a markdown file for pandocWatch to use."
+		exit 1
+	fi
+
+	# Verify that file exists
+	if [ ! -f "$1" ]; then
+		echo "Error: Specified file not found"
+		exit 1
+	fi
+
+	if [ "${1##*.}" != "md" ]; then
+		echo "Error: pandocWatch can only be used on Markdown (.md) files."
+		exit 1
+	fi
+}
+
+# Process and output the file
+render () {
+	echo "`date +"%H:%M:%S"` - Processing $INPUT... "
+	pandoc $PANDOC_FLAGS -o $OUTPUT "$INPUT"
+
+	if [ $? -eq 0 ]; then
+		echo "Complilation Successful"
+	else
+		echo "Compilation Error"
+	fi
+}
 
 
-if [ "${INPUT##*.}" != "md" ]; then
-	echo "Error: pandocWatch can only be used on Markdown (.md) files."
-	exit 1
-fi
+verifyFile "$INPUT"
 
-# Trigger an initial run
-echo "`date +"%H:%M:%S"` - Processing $INPUT... "
-pandoc $FLAGS -o $OUTPUT "$@"
-
+render
 # Open window for live preview of PDF
 zathura $OUTPUT &
 
@@ -40,13 +59,6 @@ echo "`date +"%H:%M:%S"` - Watching $INPUT... "
 
 while true; do
 	inotifywait -q -e modify "$@"
-	echo "`date +"%H:%M:%S"` - Processing $INPUT... "
-	pandoc $FLAGS -o $OUTPUT "$@"
-
-	if [ $? -eq 0 ]; then
-		echo "Complilation Successful"
-	else
-		echo "Compilation Error"
-	fi
+	render
 done
 
