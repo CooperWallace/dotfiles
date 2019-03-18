@@ -1,17 +1,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Pandoc Header file
+% Global Pandoc Header file
+% Author: Cooper Wallace
 %
 % Contains all my custom options to extend the default pandoc header
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Additional Packages
 
+%\geometry{margin=1in}
+
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{geometry} 	% Change margin geometry
-%\geometry{margin=1in}
-
 \usepackage{mhchem} 	% Chemical environment for Nuclear Notation
-
+\usepackage{physics}	% Physics
 \usepackage{mathtools}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -25,7 +26,9 @@
 
 % Decrease spacing between equations
 \setlength{\abovedisplayskip}{3pt}
+\setlength{\abovedisplayshortskip}{3pt}
 \setlength{\belowdisplayskip}{3pt}
+\setlength{\belowdisplayshortskip}{3pt}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom Environments
@@ -47,7 +50,6 @@
   \popQED\endlist\@endpefalse
 }
 \makeatother
-
 
 
 \newenvironment{boxtext} {
