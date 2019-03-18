@@ -10,6 +10,8 @@ set tabstop=4
 set shiftwidth=4
 set t_Co=256
 
+set foldcolumn=0
+
 set tw=80 " Line width
 
 set scrolloff=5		" Always show 5 lines
@@ -27,8 +29,9 @@ set undofile
 set undodir=~/.vim/misc/undo
 set directory=$HOME/.vim/misc/swap//
 
-" Remove all tralling whitespace on save.
-autocmd BufWritePre * %s/\s\+$//e
+" Fix paste bug triggered by the above inoremaps
+" https://github.com/johndgiese/dotvim/issues/4
+set t_BE=
 
 " }}}
 " Key Mapping {{{
@@ -57,10 +60,6 @@ nnoremap <silent> <A-Right> :execute 'silent! tabmove ' . (tabpagenr()+1)<CR>
 " From 'Learn Vimscript the hard way'.
 inoremap jk <esc>
 inoremap JK <esc>
-
-" Fix paste bug triggered by the above inoremaps
-" https://github.com/johndgiese/dotvim/issues/4
-set t_BE=
 
 " Change the surrounding LaTeX environment
 nmap <leader>lr <plug>(vimtex-env-change)
@@ -120,12 +119,34 @@ Plug 'junegunn/goyo.vim'
 Plug 'mikewest/vimroom'
 
 " Color Schemes
-Plug 'dikiaap/minimalist'                 " Minimalist Color Scheme
-Plug 'morhetz/gruvbox'
+Plug 'flazz/vim-colorschemes' 			" One color scheme plugin to rule them all
 call plug#end()
 
 " }}}
-" Notetaking {{{
+" Custom Functions {{{
+
+" Remove all tralling whitespace on save.
+" Check if "g:remove_whitespace" is set as a way to disable when needed
+
+let g:remove_whitespace = 1
+
+func! IsWhitespace()
+	if exists("g:remove_whitespace") &&  g:remove_whitespace == 1
+			%s/\s\+$//e
+	endif
+endfunc
+
+
+autocmd BufWritePre * call IsWhitespace()
+" }}}
+" Notetaking Functions {{{
+
+" Taken from Pro Vim book
+" Highlight mis-spelling or words that need capitalization
+fun! SetSpellingColors()
+	highlight SpellBad cterm=bold ctermfg=white ctermbg=red
+	highlight SpellCap cterm=bold ctermfg=red ctermbg=white
+endfun
 
 " Markdown Rendering to file on save
 "autocmd BufWritePost *.md !pandoc -H ~/.pandoc/header.tex -o ~/default.pdf "%:p"
@@ -140,12 +161,16 @@ function! Notetaking()
 	setlocal nonumber
 	setlocal spell spelllang=en_us
 
+	call SetSpellingColors()
+
 	" Enable vimtex usage in Markdown files.
 	call vimtex#init()
 	call litecorrect#init()
 	call textobj#sentence#init()
 	" Great plugin, but slows down load.
 	" call AutoCorrect()
+
+	setlocal foldcolumn=0
 endfunction
 
 autocmd BufNewFile,BufRead *.md call Notetaking()
@@ -159,7 +184,8 @@ augroup GoyoBGFix
 	autocmd  User GoyoLeave nested set background=dark
 augroup END
 
-" }}}
+
+" }}}}}}
 " Plugin Settings {{{1
 colorscheme gruvbox 					" Use Gruvbox Colour Scheme
 
@@ -172,10 +198,13 @@ let NERDTreeQuitOnOpen =1				" Don't close pane after opening file
 " Vim-Surround {{{2
 " Add functionality to vim.surround for LaTeX delimiters.
 " https://github.com/tpope/vim-surround/issues/47
-let g:surround_{char2nr('c')} = "\\\1command\1{\r}"
+	let g:surround_{char2nr('c')} = "\\\1command\1{\r}"
 
-" Add surround for markdown bold **word**
-let g:surround_{char2nr('o')} = "**\r**"
+" markdown bold **word**
+	let g:surround_{char2nr('o')} = "**\r**"
+" Bolded and Underlined. Sub title
+	let g:surround_{char2nr('t')} = "**\\underline{\r}**"
+
 " }}}2
 
 " Go Format {{{2
@@ -185,7 +214,7 @@ endif
 " }}}2
 
 "Gitv {{{2
-let Gitv_OpenHorizontal =1 				" Change Vertical to Horizontal Gitv
+" let Gitv_OpenHorizontal =1 				" Change Vertical to Horizontal Gitv
 "}}} 2
 
 " Typescript {{{2
@@ -198,7 +227,7 @@ let g:pandoc#formatting#mode="h"
 let g:pandoc#formatting#textwidth=80
 " }}}2
 
-" YCM / Ultisnippets {{{2
+" YCM {{{2
 
 " Remove Preview window from YCM
 set completeopt-=preview
@@ -208,13 +237,19 @@ set completeopt-=preview
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
+"}}}2
 
+" Ultisnippets {{{2
 " Expand UltiSnippets by using the <tab> key
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 let g:UltiSnipsSnippetDirectories=["~/.vim/UltiSnips/", "UltiSnips"]
+
+" Open Snippet Edit in a new window
+let g:UltiSnipsEditSplit = "tabdo"
+
 " }}}2
 
 " Vimwiki {{{2
