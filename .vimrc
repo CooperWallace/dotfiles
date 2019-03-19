@@ -33,6 +33,14 @@ set directory=$HOME/.vim/misc/swap//
 " https://github.com/johndgiese/dotvim/issues/4
 set t_BE=
 
+" Stop command window from popping u
+map q: :q
+
+
+" simple pasting from the system clipboard
+" http://tilvim.com/2014/03/18/a-better-paste.html
+map <Leader>p :set paste<CR>o<esc>"+]p:set nopaste<cr>
+
 " }}}
 " Key Mapping {{{
 
@@ -88,6 +96,7 @@ Plug 'vim-scripts/Align'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'Valloric/YouCompleteMe'
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
 Plug 'tpope/vim-surround'
 Plug 'Chiel92/vim-autoformat'
 Plug '907th/vim-auto-save'				" Autosave on Insertion change
