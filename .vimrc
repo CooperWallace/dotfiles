@@ -152,6 +152,9 @@ endfun
 "autocmd BufWritePost *.md !pandoc -H ~/.pandoc/header.tex -o ~/default.pdf "%:p"
 
 function! Notetaking()
+	" Disable fold column for pandoc
+	let g:pandoc#folding#fdc = 0
+
 	" Pencil with Soft line breaks
 	call pencil#init({"wrap" : "soft"})
 
@@ -169,8 +172,6 @@ function! Notetaking()
 	call textobj#sentence#init()
 	" Great plugin, but slows down load.
 	" call AutoCorrect()
-
-	setlocal foldcolumn=0
 endfunction
 
 autocmd BufNewFile,BufRead *.md call Notetaking()
@@ -188,6 +189,7 @@ augroup END
 " }}}}}}
 " Plugin Settings {{{1
 colorscheme gruvbox 					" Use Gruvbox Colour Scheme
+
 
 " NERD Tree {{{2
 " Map openning NERDTree to Ctrl-O
