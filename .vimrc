@@ -36,7 +36,6 @@ set t_BE=
 " Stop command window from popping u
 map q: :q
 
-
 " simple pasting from the system clipboard
 " http://tilvim.com/2014/03/18/a-better-paste.html
 map <Leader>p :set paste<CR>o<esc>"+]p:set nopaste<cr>
@@ -73,7 +72,7 @@ inoremap JK <esc>
 nmap <leader>lr <plug>(vimtex-env-change)
 
 " On the fly rc editing, and sourcing
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>ev :tabnew $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>ss :call UltiSnips#RefreshSnippets()<cr>
 
@@ -86,6 +85,18 @@ onoremap in( :<c-u>normal! f(vi)<cr>
 " Fix next spelling correction
 nnoremap <leader>sc ]s1z=
 
+" Map $ binds to m
+nnoremap dm O\[<ESC>j>>o<BS>\]<ESC>k
+nmap csm cs$
+nmap dsm ds$
+nmap dam da$
+nmap dim di$
+nmap cim ci$
+nmap cam ca$
+nmap vim vi$
+nmap vam va$
+
+
 " }}}
 " Plugins {{{
 
@@ -96,7 +107,6 @@ Plug 'vim-scripts/Align'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'Valloric/YouCompleteMe'
-Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
 Plug 'tpope/vim-surround'
 Plug 'Chiel92/vim-autoformat'
 Plug '907th/vim-auto-save'				" Autosave on Insertion change
@@ -151,22 +161,21 @@ autocmd BufWritePre * call IsWhitespace()
 " Notetaking Functions {{{
 
 " Taken from Pro Vim book
-" Highlight mis-spelling or words that need capitalization
+" Underline mis-spelling or words that need capitalization
+" No colors to minimize distraction
 fun! SetSpellingColors()
-	highlight SpellBad cterm=bold ctermfg=white ctermbg=red
-	highlight SpellCap cterm=bold ctermfg=red ctermbg=white
+	highlight SpellBad cterm=underline
+	highlight SpellCap cterm=underline
 endfun
 
 " Markdown Rendering to file on save
 "autocmd BufWritePost *.md !pandoc -H ~/.pandoc/header.tex -o ~/default.pdf "%:p"
 
 function! Notetaking()
-	" Disable fold column for pandoc
-	let g:pandoc#folding#fdc = 0
-
 	" Pencil with Soft line breaks
 	call pencil#init({"wrap" : "soft"})
 
+	set textwidth=80
 	" Disable item character coneal
 	setlocal conceallevel=2
 	" Disable numbers, not needed
@@ -215,7 +224,8 @@ let NERDTreeQuitOnOpen =1				" Don't close pane after opening file
 	let g:surround_{char2nr('o')} = "**\r**"
 " Bolded and Underlined. Sub title
 	let g:surround_{char2nr('t')} = "**\\underline{\r}**"
-
+" Underline
+	let g:surround_{char2nr('u')} = "\\underline{\r}"
 " }}}2
 
 " Go Format {{{2
@@ -236,6 +246,9 @@ let g:typescript_indent_disable =1		" Disable autoindent in Typescript
 " Use hard break for writing, and 80 char limit
 let g:pandoc#formatting#mode="h"
 let g:pandoc#formatting#textwidth=80
+
+" Disable fold column for pandoc
+let g:pandoc#folding#fdc = 0
 " }}}2
 
 " YCM {{{2
