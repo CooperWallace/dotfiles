@@ -6,13 +6,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Additional Packages
 
-%\geometry{margin=1in}
 
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{geometry} 	% Change margin geometry
+\geometry{margin=1in}
+
 \usepackage{mhchem} 	% Chemical environment for Nuclear Notation
 \usepackage{physics}	% Physics
+\usepackage{svrsymbols}
 \usepackage{mathtools}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -32,6 +34,9 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom Environments
+
+% Allow Environment break over line
+\allowdisplaybreaks
 
 % Redefine proof environment to be indented automatically.
 % https://tex.stackexchange.com/questions/279725/indent-proof-environment/279729#279729
