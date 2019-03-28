@@ -47,12 +47,14 @@ workspace_auto_back_and_forth yes
 
 
 #--- Workspace Assignments ---#
-for_window [class="^Steam?"] move to workspace 8
+for_window [class="^[Ss]team?"] move to workspace 8
+assign [class="^[Ss]team?"] workspace 8
+
 for_window [class="Slack"] move to workspace 9
 for_window [class="discord"] move to workspace 9
 
-assign [class="^Steam?"] workspace 8
-assign [class="Spotify"] workspace 10
+for_window [class="^[Ss]potify?"] move to workspace 10
+assign [class="^[Ss]potify?"] workspace 10
 
 #--- Window Movement and Manipulation ---#
 # Change window focus using jkl. or cursor keys
@@ -108,14 +110,19 @@ for_window [class="RangerDropdown"] border pixel 5
 # Starts a terminal with the Ranger filebrowser for easy reusability
 exec --no-startup-id gnome-terminal --class=RangerDropdown -e ranger
 
+# -- Android Messages Float
+for_window [class="Android Messages"] floating enable
+for_window [class="Android Messages"] move scratchpad
+for_window [class="Android Messages"] resize set 900 600
+
 #--- Mode Initialiations ---#
 # Resize window mode (you can also use the mouse for that)
 #	Home: Resize a floating window to small video window
 mode "resize" {
-        bindsym l resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym h resize grow width 10 px or 10 ppt
+        bindsym l resize shrink width 5 px or 5 ppt
+        bindsym j resize grow height 5 px or 5 ppt
+        bindsym k resize shrink height 5 px or 5 ppt
+        bindsym h resize grow width 5 px or 5 ppt
         bindsym Left resize shrink width 10 px or 10 ppt
         bindsym Down resize grow height 10 px or 10 ppt
         bindsym Up resize shrink height 10 px or 10 ppt
@@ -214,6 +221,9 @@ bindsym $mod+d exec rofi -show run
 #--- Dropdown Terminal Binds ---#
 # Launch dropdown if closed; toggle scratchpad
 bindsym $mod+u exec "dropdown"; [class="RangerDropdown"] scratchpad show; [class="RangerDropdown"] move position center
+
+# Show Android Messages if it exists
+bindsym $mod+i [class="Android Messages"] scratchpad show; [class="Android Messages"] move position center
 
 #--- Command Binds ---#
 bindsym $mod+p exec "dm-tool lock"
