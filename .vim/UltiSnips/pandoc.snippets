@@ -82,6 +82,12 @@ snippet ali "Aligned"
 \end{align*}
 endsnippet
 
+snippet fli "Aligned Float Left"
+\begin{flalign*}
+	${1:1} &&
+\end{flalign*}
+endsnippet
+
 snippet begin "Latex begin environment"
 \begin{${1:name}}
 	${2:${VISUAL}}
@@ -130,6 +136,27 @@ snippet frac "Fraction" i
 \frac{${1:1}}{${2:2}}
 endsnippet
 
+# Taken from the great
+# https://gist.github.com/gillescastel/8da990dbc83c1c86f8ca048bc83624f0
+priority 10
+snippet '(\d+)/' "number frac" wrA
+\\frac{`!p snip.rv = match.group(1)`}{$1}$0
+endsnippet
+
+snippet '^.*\)/' "() frac" wrA
+`!p
+stripped = match.string[:-1]
+depth = 0
+i = len(stripped) - 1
+while True:
+	if stripped[i] == ')': depth += 1
+	if stripped[i] == '(': depth -= 1
+	if depth == 0: break;
+	i-=1
+snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
+`{$1}$0
+endsnippet
+
 snippet lim "Limits" i
 \lim_{x\to ${1:}}
 endsnippet
@@ -166,11 +193,66 @@ snippet /\^\^/ "Superscript" riA
 ^{$1}$0
 endsnippet
 
+snippet // "Fraction" iA
+\\frac{$1}{$2}$0
+endsnippet
+
+################################################################################
+# Mathematical Symbol Macros
+
+snippet >= "Greater than equal" iA
+\geq
+endsnippet
+
+snippet <= "Less than equal" iA
+\leq
+endsnippet
+
+snippet != "Not equal" iA
+\neq
+endsnippet
+
+snippet ~= "Approximate" iA
+\approx
+endsnippet
+
+snippet sqrt "Square root" iA
+\sqrt{${1:1}}
+endsnippet
+
+snippet vec "Vector Hat" i
+\vec{$1}$0
+endsnippet
+
+# Set Theory
+snippet notin "not in" iA
+\not\in
+endsnippet
+
+snippet UU "cup" iA
+\cup
+endsnippet
+
+snippet binom "Binomial environment" i
+\binom{$1}{$2}$0
+endsnippet
+
+snippet mm "Math" wA
+$${1:${VISUAL}}$`!p
+punctuation = t[2] and t[2][0] in [',', '.', '?', '-']
+if punctuation:
+	if len(t[2]) == 1:
+		t[2] = t[2] + (' ' if t[2][0] in [',', '.', '?'] else '')
+	snip.rv=''
+else:
+	snip.rv=' '
+`$2
+endsnippet
 ################################################################################
 # Templates
 ## Inspiration from Lervag dotvim
 
-snippet templ_includegraphics "Include a Graphical image" i
+snippet templ_img "Include a Graphical image" i
 \begin{center}
 	\includegraphics[scale=${1}]{./figures/${2}}
 \end{center}
