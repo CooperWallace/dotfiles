@@ -173,7 +173,7 @@ endfun
 
 function! Notetaking()
 	" Pencil with Soft line breaks
-	call pencil#init({"wrap" : "soft"})
+	" call pencil#init({"wrap" : "soft"})
 
 	set textwidth=80
 	" Disable item character coneal
@@ -246,6 +246,10 @@ let g:typescript_indent_disable =1		" Disable autoindent in Typescript
 " Use hard break for writing, and 80 char limit
 let g:pandoc#formatting#mode="h"
 let g:pandoc#formatting#textwidth=80
+
+" Better folds
+let g:pandoc#folding#fold_yaml = 1
+let g:pandoc#folding#mode = "relative"
 
 " Disable fold column for pandoc
 let g:pandoc#folding#fdc = 0
