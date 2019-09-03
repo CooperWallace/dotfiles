@@ -7,58 +7,83 @@
 # Default Flags to be used
 
 INPUT="$@"
-OUTPUT=~/default.pdf
+# Output File
+PDF_OUTPUT="$HOME/default.pdf"
 
-PANDOC_HEADER="/home/cooper/.pandoc/header.tex" 	# Extension header file
-PANDOC_FLAGS="--listings -H $PANDOC_HEADER"
+# Compilation Directory for intermediate files
+TMP_COMPILE_DIR="$HOME/.pandoc/compile/"
+# Compilation name for intermediate tex file
+TEX_NAME=default
+# Compilation file for intermediate tex file
+TEX_FILE="$TMP_COMPILE_DIR$TEX_NAME".tex
+# Finished Compilation file location
+TMP_PDF_LOCATION="$TMP_COMPILE_DIR$TEX_NAME".pdf
+
+
+# Pandoc Flags and Header
+
+PANDOC_FLAGS="--listings"
+PANDOC_FLAGS=$PANDOC_FLAGS" -H /home/cooper/.pandoc/header.tex" 	# Extension header file
 
 ################################################################################
 
 # Verify the correct file has been given
 verifyFile () {
-	if [ -z "$1" ]; then
-		print_usage
+	if [ -z "$INPUT" ]; then
 		echo "Error: Missing filename argument"
 		echo "You must specify a markdown file for pandocWatch to use."
 		exit 1
 	fi
 
 	# Verify that file exists
-	if [ ! -f "$1" ]; then
+	if [ ! -f "$INPUT" ]; then
 		echo "Error: Specified file not found"
 		exit 1
 	fi
 
-	if [ "${1##*.}" != "md" ]; then
+	if [ "${INPUT##*.}" != "md" ]; then
 		echo "Error: pandocWatch can only be used on Markdown (.md) files."
 		exit 1
 	fi
 }
 
-# Process and output the file
-render () {
-	echo "`date +"%H:%M:%S"` - Processing $INPUT... "
-	pandoc $PANDOC_FLAGS -o $OUTPUT "$INPUT"
+# Compile a file using Pandoc and pdflatex for faster compilation
+compile () {
+	echo "`date +"%H:%M:%S"` - Rendering "
 
-	if [ $? -eq 0 ]; then
-		echo "Complilation Successful"
-	else
-		echo "Compilation Error"
+	pandoc $PANDOC_FLAGS -o "$TEX_FILE" "$INPUT"
+
+	if ! [ $? -eq 0 ]; then
+		echo "Pandoc Compilation Error"
+		return
 	fi
+
+	# Move to pdflatex if successful
+	( cd $TMP_COMPILE_DIR
+	  texfot --quiet pdflatex "$TMP_COMPILE_DIR$TEX_NAME"
+	)
+
+	if ! [ $? -eq 0 ]; then
+		echo "pdflatex compilation error"
+		return
+	fi
+
+	cp "$TMP_COMPILE_DIR""default.pdf" "$PDF_OUTPUT"
 }
 
+main () {
+	verifyFile "$INPUT"
 
-verifyFile "$INPUT"
+	compile
+	zathura "$PDF_OUTPUT" & disown
 
-render
-# Open window for live preview of PDF
-zathura $OUTPUT &
+	# Continuously compile on save
+	echo "`date +"%H:%M:%S"` - Watch successfully initialized."
 
-# Continuously compile on save
-echo "`date +"%H:%M:%S"` - Watching $INPUT... "
+	while true; do
+		inotifywait -q -e modify "$INPUT"
+		compile
+	done
+}
 
-while true; do
-	inotifywait -q -e modify "$@"
-	render
-done
-
+main
