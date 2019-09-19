@@ -237,6 +237,11 @@ snippet ~= "Approximate" iA
 \approx
 endsnippet
 
+context "isMath()"
+snippet !~ "Not Approximate" iA
+\not \approx
+endsnippet
+
 snippet sqrt "Square root" iA
 \sqrt{${1:1}}
 endsnippet
@@ -258,23 +263,31 @@ snippet binom "Binomial environment" i
 \binom{$1}{$2}$0
 endsnippet
 
-snippet mm "Math" wA
-$${1:${VISUAL}}$`!p
-punctuation = t[2] and t[2][0] in [',', '.', '?', '-']
-if punctuation:
-	if len(t[2]) == 1:
-		t[2] = t[2] + (' ' if t[2][0] in [',', '.', '?'] else '')
-	snip.rv=''
-else:
-	snip.rv=' '
-`$2
+snippet "(\\?)hat" "Approximation hat" ir
+\hat{$1}$0
 endsnippet
+
+snippet "(\\?)dot?( (\S+))?" "Dot Notation" r
+\dot{`!p
+snip.rv = match.group(3) if match.group(2) is not None else "" `} $0
+endsnippet
+
+snippet "(\\?)ddot" "Double Dot Notation" ir
+\ddot{$1} $0
+endsnippet
+
+snippet "(\\?)dddot" "Triple Notation" ir
+\dddot{$1} $0
+endsnippet
+
 ################################################################################
 # Templates
 ## Inspiration from Lervag dotvim
 
-snippet templ_img "Include a Graphical image" i
+snippet incimg "Include a Graphical image" i
 \begin{center}
 	\includegraphics[scale=${1}]{./figures/${2}}
 \end{center}
 endsnippet
+
+
