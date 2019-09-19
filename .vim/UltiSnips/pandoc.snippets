@@ -49,6 +49,15 @@ def create_matrix(snip):
 
         snip.expand_anon(final_str)
 
+# Check if the specific function is inside a math environment
+# Move isMath() function into a Python function
+# https://vi.stackexchange.com/questions/18136/make-conditional-imap-to-text-\
+# being-enclosed-in-certain-characters
+def isMath():
+	env = vim.eval("match(map(synstack(line('.'), max([col('.') - 1, 1])),\
+		'synIDattr(v:val, ''name'')'), '^texMathZone[A-Z]S\?$') >= 0")
+	return env == "1"
+
 endglobal
 
 pre_expand "create_matrix(snip)"
@@ -96,7 +105,7 @@ endsnippet
 
 snippet header "Document heaer"
 ---
-header-title: ${1:`!v vim_snippets#Filename('$1', 'title')`}
+header-title: `!v vim_snippets#Filename('$1', 'title')`
 header-author: Cooper Wallace
 header-date: `!v strftime("%b %-e %Y")`
 ---
@@ -195,6 +204,18 @@ endsnippet
 
 snippet // "Fraction" iA
 \\frac{$1}{$2}$0
+endsnippet
+
+snippet mm "Math" wA
+$${1:${VISUAL}}$`!p
+punctuation = t[2] and t[2][0] in [',', '.', '?', '-']
+if punctuation:
+	if len(t[2]) == 1:
+		t[2] = t[2] + (' ' if t[2][0] in [',', '.', '?'] else '')
+	snip.rv=''
+else:
+	snip.rv=' '
+`$2
 endsnippet
 
 ################################################################################
