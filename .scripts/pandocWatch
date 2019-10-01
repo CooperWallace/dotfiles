@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 #
 # Watches the markdown file (*.md) specified, and compiles it using
 # Pandoc on each save.
@@ -12,6 +12,7 @@ PDF_OUTPUT="$HOME/default.pdf"
 
 # Compilation Directory for intermediate files
 TMP_COMPILE_DIR="$HOME/.pandoc/compile/"
+TMP_COMPILE_FIGURES_DIR="$HOME/.pandoc/compile/figures"
 # Compilation name for intermediate tex file
 TEX_NAME=default
 # Compilation file for intermediate tex file
@@ -21,31 +22,27 @@ TMP_PDF_LOCATION="$TMP_COMPILE_DIR$TEX_NAME".pdf
 
 
 # Pandoc Flags and Header
-
 PANDOC_FLAGS="--listings"
-PANDOC_FLAGS=$PANDOC_FLAGS" -H /home/cooper/.pandoc/header.tex" 	# Extension header file
+PANDOC_FLAGS="$PANDOC_FLAGS -H /home/cooper/.pandoc/header.tex"
 
 ################################################################################
 
 # Verify the correct file has been given
 verifyFile () {
-	if [ -z "$INPUT" ]; then
-		echo "Error: Missing filename argument"
+	if [[ -z "$INPUT" ]] || [[ "${INPUT##*.}" != "md" ]]; then
 		echo "You must specify a markdown file for pandocWatch to use."
 		exit 1
 	fi
 
 	# Verify that file exists
 	if [ ! -f "$INPUT" ]; then
-		echo "Error: Specified file not found"
-		exit 1
-	fi
-
-	if [ "${INPUT##*.}" != "md" ]; then
-		echo "Error: pandocWatch can only be used on Markdown (.md) files."
+		echo "Specified file, $INPUT, not found"
 		exit 1
 	fi
 }
+
+# pre_compile() {}
+# post_compile() {}
 
 # Compile a file using Pandoc and pdflatex for faster compilation
 compile () {
@@ -56,6 +53,18 @@ compile () {
 	if ! [ $? -eq 0 ]; then
 		echo "Pandoc Compilation Error"
 		return
+	fi
+
+	# Remove figures if exists
+	if [[ -d "$TMP_COMPILE_FIGURES_DIR" ]]; then
+		rm "$TMP_COMPILE_FIGURES_DIR"
+	fi
+
+	echo "${INPUT%/*}"
+	# Link Figures directory iif exists
+	if [[ -d "${INPUT%/*}/figures" ]]; then
+		echo "Linking figures"
+		ln -s "${INPUT%/*}/figures"  "$TMP_COMPILE_FIGURES_DIR"
 	fi
 
 	# Move to pdflatex if successful
@@ -73,9 +82,12 @@ compile () {
 
 main () {
 	verifyFile "$INPUT"
-
 	compile
-	zathura "$PDF_OUTPUT" & disown
+
+	# Open Zathura if it isnt open already
+	if [[ `ps aux | grep "zathura $PDF_OUTPUT" | wc -l` != "2" ]]; then
+		zathura "$PDF_OUTPUT" &
+	fi
 
 	# Continuously compile on save
 	echo "`date +"%H:%M:%S"` - Watch successfully initialized."

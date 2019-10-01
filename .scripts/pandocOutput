@@ -1,6 +1,68 @@
+#!/usr/bin/env bash
 # Render an entire folder of files to the output/ directory.
 
+################################################################################
+
+# Compilation Directory for intermediate files
+TMP_COMPILE_DIR="$HOME/.pandoc/compile/"
+# Compilation name for intermediate tex file
+TEX_NAME=default
+# Compilation file for intermediate tex file
+TEX_FILE="$TMP_COMPILE_DIR$TEX_NAME".tex
+# Finished Compilation file location
+TMP_PDF_LOCATION="$TMP_COMPILE_DIR$TEX_NAME".pdf
+
+# Pandoc Flags and Header
+PANDOC_FLAGS="--listings"
+PANDOC_FLAGS=$PANDOC_FLAGS" -H /home/cooper/.pandoc/header.tex" 	# Extension header file
+
+################################################################################
+
+# Compile a file using Pandoc and pdflatex for faster compilation
+compile_file() {
+	IN_FILENAME="$1"
+	OUT_FILENAME="../Output/${IN_FILENAME%.*}.pdf"
+
+	# Do not compile if PDF is newer
+	if [[ "$IN_FILENAME" -ot "$OUT_FILENAME" ]]; then
+		echo "$IN_FILENAME already compiled"
+		return
+	fi
+
+
+	pandoc $PANDOC_FLAGS -o "$TEX_FILE" "$IN_FILENAME"
+
+	if ! [ $? -eq 0 ]; then
+		echo "Pandoc Compilation Error"
+		return
+	fi
+
+	# Move to pdflatex if successful
+	( cd $TMP_COMPILE_DIR
+	  texfot --quiet pdflatex "$TMP_COMPILE_DIR$TEX_NAME"
+	)
+
+	if ! [ $? -eq 0 ]; then
+		echo "pdflatex compilation error"
+		return
+	fi
+
+	cp "$TMP_COMPILE_DIR""default.pdf" "$OUT_FILENAME"
+}
+
+if [[ ! -e  "../Output/" ]]; then
+	echo "No folder in previous directory to render to"
+	exit
+fi
+
+
+
 for f in *.md; do
-	pandoc --listings -H ~/.pandoc/header.tex "${f}" -o "output/${f%.*}.pdf";
-	echo ${f};
+	compile_file "${f}"
 done
+
+# PDFUnit
+(
+cd ../Output
+pdfunite `ls Lec* | sort -V` out.pdf
+)
