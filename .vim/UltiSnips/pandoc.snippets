@@ -57,7 +57,6 @@ def isMath():
 	env = vim.eval("match(map(synstack(line('.'), max([col('.') - 1, 1])),\
 		'synIDattr(v:val, ''name'')'), '^texMathZone[A-Z]S\?$') >= 0")
 	return env == "1"
-
 endglobal
 
 pre_expand "create_matrix(snip)"
@@ -115,6 +114,13 @@ endsnippet
 
 snippet text "Equation text"
 \text{${1:Text}}
+endsnippet
+
+snippet eqn "Gather Environment"
+\begin{gather*}
+$1
+\end{gather*}
+$0
 endsnippet
 
 ################################################################################
@@ -182,28 +188,39 @@ snippet sum "Sum Equation" i
 \sum_{i=${1:1}}^${2:n}
 endsnippet
 
+context "isMath()"
 snippet cases "Peacewise Cases" i
-$$\begin{cases}
+\begin{cases}
 	1 & n= 0
-\end{cases}$$
+\end{cases}
 endsnippet
 
+context "isMath()"
 snippet ce "Chemical Equations" i
 \ce{^${1}_${2} ${3}}
 endsnippet
 
 # Subscripts
 
+context "isMath()"
 snippet /\_\_/ "Subscript" riA
 _{$1}$0
 endsnippet
 
+context "isMath()"
 snippet /\^\^/ "Superscript" riA
 ^{$1}$0
 endsnippet
 
+context "isMath()"
 snippet // "Fraction" iA
 \\frac{$1}{$2}$0
+endsnippet
+
+priority 100
+context "isMath()"
+snippet p// "Partial Fraction" iA
+\\frac{\partial $1}{\partial $2}$0
 endsnippet
 
 snippet mm "Math" wA
@@ -216,6 +233,12 @@ if punctuation:
 else:
 	snip.rv=' '
 `$2
+endsnippet
+
+# Allows for the following: <symbol> dot -> \dot{symbol}
+# Useful when recording lecture verbatim "Theta dot"
+snippet '(\\?\w+) (d{1,3})ot' "Dot notation" irA
+\\`!p snip.rv = match.group(2) +  "ot{" + match.group(1) + "} "`
 endsnippet
 
 ################################################################################
@@ -267,17 +290,13 @@ snippet "(\\?)hat" "Approximation hat" ir
 \hat{$1}$0
 endsnippet
 
-snippet "(\\?)dot?( (\S+))?" "Dot Notation" r
-\dot{`!p
-snip.rv = match.group(3) if match.group(2) is not None else "" `} $0
+snippet lagrangian "Lagrangian"
+\frac{\partial L}{\partial $1} - \frac{d}{dt} (\frac{\partial L}{\partial
+\dot{$1}})=0
 endsnippet
 
-snippet "(\\?)ddot" "Double Dot Notation" ir
-\ddot{$1} $0
-endsnippet
-
-snippet "(\\?)dddot" "Triple Notation" ir
-\dddot{$1} $0
+snippet ddt "Integral of t" iA
+\frac{d}{dt} $0
 endsnippet
 
 ################################################################################
@@ -287,6 +306,12 @@ endsnippet
 snippet incimg "Include a Graphical image" i
 \begin{center}
 	\includegraphics[scale=${1}]{./figures/${2}}
+\end{center}
+endsnippet
+
+snippet incfig "Include pdf_tex image" i
+\begin{center}
+	\scalebox{$1}{\import{./figures/}{$2.pdf_tex}}
 \end{center}
 endsnippet
 
