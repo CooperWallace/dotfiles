@@ -1,5 +1,4 @@
 \documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$babel-lang$,$endif$$if(papersize)$$papersize$paper,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
-\usepackage{pgfplots}
 \usepackage{tikz} % Add graph support
 \usetikzlibrary{shapes,arrows}
 \usepackage{amsthm}
@@ -146,15 +145,6 @@ $if(strikeout)$
 % avoid problems with \sout in headers with hyperref:
 \pdfstringdefDisableCommands{\renewcommand{\sout}{}}
 $endif$
-$if(indent)$
-$else$
-\IfFileExists{parskip.sty}{%
-\usepackage{parskip}
-}{% else
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-}
-$endif$
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -212,6 +202,13 @@ $endif$
 \date{$date$}
 
 \begin{document}
+
+% Decrease spacing between equations
+\setlength{\abovedisplayskip}{-5pt}
+\setlength{\abovedisplayshortskip}{-5pt}
+\setlength{\belowdisplayskip}{5pt}
+\setlength{\belowdisplayshortskip}{5pt}
+
 $if(title)$
 \maketitle
 $endif$
@@ -231,7 +228,6 @@ $if(header-date)$
 \rhead{$header-date$}
 $endif$
 $endif$
-
 
 $for(include-before)$
 $include-before$

@@ -6,13 +6,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Additional Packages
 
-
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{geometry} 	% Change margin geometry
 \geometry{margin=1in}
+\usepackage{wrapfig}
 
-\usepackage{mhchem} 	% Chemical environment for Nuclear Notation
+\PassOptionsToPackage{fleqn}{amsmath}
+
+\usepackage[version=3]{mhchem} 	% Chemical environment for Nuclear Notation
 \usepackage{physics}	% Physics
 \usepackage{svrsymbols}
 \usepackage{mathtools}
@@ -26,11 +28,12 @@
 \IfFileExists{/home/cooper/.pandoc/customMacros.tex}
 	{\import{/home/cooper/.pandoc/}{customMacros.tex}}
 
-% Decrease spacing between equations
-\setlength{\abovedisplayskip}{3pt}
-\setlength{\abovedisplayshortskip}{3pt}
-\setlength{\belowdisplayskip}{3pt}
-\setlength{\belowdisplayshortskip}{3pt}
+% Reduce normal spacing
+%\usepackage[nodisplayskipstretch]{setspace}
+%\setstretch{1}
+
+%\setlength{\parskip}{0pt}
+%\setlength{\parindent}{0pt}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom Environments
