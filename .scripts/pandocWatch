@@ -7,23 +7,19 @@
 # Default Flags to be used
 
 INPUT="$@"
-# Output File
 PDF_OUTPUT="$HOME/default.pdf"
-
-# Compilation Directory for intermediate files
-TMP_COMPILE_DIR="$HOME/.pandoc/compile/"
-TMP_COMPILE_FIGURES_DIR="$HOME/.pandoc/compile/figures"
-# Compilation name for intermediate tex file
-TEX_NAME=default
-# Compilation file for intermediate tex file
-TEX_FILE="$TMP_COMPILE_DIR$TEX_NAME".tex
-# Finished Compilation file location
-TMP_PDF_LOCATION="$TMP_COMPILE_DIR$TEX_NAME".pdf
-
-
 # Pandoc Flags and Header
 PANDOC_FLAGS="--listings"
 PANDOC_FLAGS="$PANDOC_FLAGS -H /home/cooper/.pandoc/header.tex"
+PANDOC_FLAGS="$PANDOC_FLAGS --template=/home/cooper/.pandoc/default.latex"
+PANDOC_FLAGS="$PANDOC_FLAGS --variable classoption=fleqn"
+
+# Compilation Files for Intermediate Files
+TMP_COMPILE_DIR="$HOME/.pandoc/compile/"
+TMP_COMPILE_FIGURES_DIR="$HOME/.pandoc/compile/figures"
+TEX_NAME=default
+TEX_FILE="$TMP_COMPILE_DIR$TEX_NAME".tex
+TMP_PDF_LOCATION="$TMP_COMPILE_DIR$TEX_NAME".pdf
 
 ################################################################################
 
