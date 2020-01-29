@@ -14,6 +14,11 @@ PANDOC_FLAGS="$PANDOC_FLAGS -H /home/cooper/.pandoc/header.tex"
 PANDOC_FLAGS="$PANDOC_FLAGS --template=/home/cooper/.pandoc/default.latex"
 PANDOC_FLAGS="$PANDOC_FLAGS --variable classoption=fleqn"
 
+# Files to be watched during compilation.
+WATCH_FILES="-e modify $INPUT"
+WATCH_FILES="$WATCH_FILES -e modify /home/cooper/.pandoc/header.tex"
+WATCH_FILES="$WATCH_FILES -e modify /home/cooper/.pandoc/default.latex"
+
 # Compilation Files for Intermediate Files
 TMP_COMPILE_DIR="$HOME/.pandoc/compile/"
 TMP_COMPILE_FIGURES_DIR="$HOME/.pandoc/compile/figures"
@@ -89,7 +94,7 @@ main () {
 	echo "`date +"%H:%M:%S"` - Watch successfully initialized."
 
 	while true; do
-		inotifywait -q -e modify "$INPUT"
+		inotifywait -q $WATCH_FILES
 		compile
 	done
 }
