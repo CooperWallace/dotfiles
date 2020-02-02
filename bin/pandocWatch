@@ -64,7 +64,7 @@ compile () {
 	echo "${INPUT%/*}"
 
 	# Remove figures Compile directory if it is currently linked
-	if [[ -d "$TMP_COMPILE_DIR" ]]; then
+	if [[ -L "$TMP_COMPILE_DIR" ]]; then
 		rm "$TMP_COMPILE_FIGURES_DIR"
 	fi
 
@@ -88,6 +88,9 @@ compile () {
 }
 
 main () {
+	# Resolve relative path
+	INPUT=$(readlink -f "$INPUT")
+
 	verifyFile "$INPUT"
 	compile
 
