@@ -62,6 +62,12 @@ compile () {
 	fi
 
 	echo "${INPUT%/*}"
+
+	# Remove figures Compile directory if it is currently linked
+	if [[ -d "$TMP_COMPILE_DIR" ]]; then
+		rm "$TMP_COMPILE_FIGURES_DIR"
+	fi
+
 	# Link Figures directory iif exists
 	if [[ -d "${INPUT%/*}/figures" ]]; then
 		echo "Linking figures"
