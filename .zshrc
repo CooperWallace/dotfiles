@@ -113,13 +113,12 @@ HISTSIZE=20000
 setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
 setopt SHARE_HISTORY             # Share history between all sessions.
 
-
-
 # Command not found suggestion
 #. /etc/zsh_command_not_found
 
-# Add autojumper
-. /usr/share/autojump/autojump.zsh
+# Z jump based on Frequency and Recentness
+. /home/cooper/Development/builds/z/z.sh
+
 
 # Set zsh to use the powerline theme
 # . /usr/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh
