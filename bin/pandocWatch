@@ -42,29 +42,10 @@ verifyFile () {
 	fi
 }
 
-# pre_compile() {}
-# post_compile() {}
-
-# Compile a file using Pandoc and pdflatex for faster compilation
-compile () {
-	echo "`date +"%H:%M:%S"` - Rendering "
-
-	pandoc $PANDOC_FLAGS -o "$TEX_FILE" "$INPUT"
-
-	if ! [ $? -eq 0 ]; then
-		echo "Pandoc Compilation Error"
-		return
-	fi
-
-	# Remove figures if exists
-	if [[ -d "$TMP_COMPILE_FIGURES_DIR" ]]; then
-		rm "$TMP_COMPILE_FIGURES_DIR"
-	fi
-
-	echo "${INPUT%/*}"
-
+# Function to execute before the compilation
+pre_compile() {
 	# Remove figures Compile directory if it is currently linked
-	if [[ -L "$TMP_COMPILE_DIR" ]]; then
+	if [[ -L "$TMP_COMPILE_FIGURES_DIR" ]]; then
 		rm "$TMP_COMPILE_FIGURES_DIR"
 	fi
 
@@ -73,6 +54,26 @@ compile () {
 		echo "Linking figures"
 		ln -s "${INPUT%/*}/figures"  "$TMP_COMPILE_FIGURES_DIR"
 	fi
+}
+
+# Function to execute after compilation
+post_compile() {
+	# Simplpy copy to dir
+	cp "$TMP_COMPILE_DIR""default.pdf" "$PDF_OUTPUT"
+}
+
+# Compile a file using Pandoc and pdflatex for faster compilation
+compile () {
+	echo "`date +"%H:%M:%S"` - Rendering "
+
+	echo "${INPUT%/*}"
+	pandoc $PANDOC_FLAGS -o "$TEX_FILE" "$INPUT"
+
+	if ! [ $? -eq 0 ]; then
+		echo "Pandoc Compilation Error"
+		return
+	fi
+
 
 	# Move to pdflatex if successful
 	( cd $TMP_COMPILE_DIR
@@ -84,7 +85,6 @@ compile () {
 		return
 	fi
 
-	cp "$TMP_COMPILE_DIR""default.pdf" "$PDF_OUTPUT"
 }
 
 main () {
@@ -92,7 +92,9 @@ main () {
 	INPUT=$(readlink -f "$INPUT")
 
 	verifyFile "$INPUT"
+	pre_compile
 	compile
+	post_compile
 
 	# Open Zathura if it isnt open already
 	if [[ `ps aux | grep "zathura $PDF_OUTPUT" | wc -l` != "2" ]]; then
@@ -105,6 +107,7 @@ main () {
 	while true; do
 		inotifywait -q $WATCH_FILES
 		compile
+		post_compile
 	done
 }
 
