@@ -289,5 +289,7 @@ let g:vimwiki_list = [
 			\{'path': '~/grive/vimwiki/work', 'syntax': 'markdown', 'ext': '.md'}
 			\]
 
+let g:vimwiki_folding = 'expr'
+
 " }}}2
 " }}}1
