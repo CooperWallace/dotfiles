@@ -7,3 +7,4 @@ These are the config files that I use on my machines. They are ever changing, an
 * [polybar](https://github.com/jaagr/polybar)
 * [compton](https://github.com/chjj/compton)
 
+- [i3-persist](https://github.com/Igrom/i3-persist)
