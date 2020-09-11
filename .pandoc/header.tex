@@ -8,10 +8,7 @@
 
 \usepackage{graphicx}
 \usepackage{xcolor}
-\usepackage{geometry} 	% Change margin geometry
-\geometry{margin=1in}
 \usepackage{wrapfig}
-
 \PassOptionsToPackage{fleqn}{amsmath}
 
 \usepackage[version=3]{mhchem} 	% Chemical environment for Nuclear Notation
@@ -19,6 +16,9 @@
 \usepackage{svrsymbols}
 \usepackage{mathtools}
 
+% Disable spacing before itemize, etc
+\usepackage{enumitem}
+\setlist{topsep=0pt}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom macros are defined in the 'customMacros.tex' file
 % import needs to be used for file path outside cwd
@@ -32,7 +32,7 @@
 %\usepackage[nodisplayskipstretch]{setspace}
 %\setstretch{1}
 
-\setlength{\parskip}{0pt}
+\setlength{\parskip}{5pt}
 \setlength{\parindent}{0pt}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
