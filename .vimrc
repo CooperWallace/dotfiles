@@ -2,7 +2,7 @@
 " General/ Quality of Life {{{
 set nocompatible 	" Disable Vi options
 set exrc			" Use Settings in current dir
-
+call has('python3')
 set scrolloff =5
 set autoindent
 set number
@@ -168,9 +168,6 @@ fun! SetSpellingColors()
 	highlight SpellCap cterm=underline
 endfun
 
-" Markdown Rendering to file on save
-"autocmd BufWritePost *.md !pandoc -H ~/.pandoc/header.tex -o ~/default.pdf "%:p"
-
 function! Notetaking()
 	" Pencil with Soft line breaks
 	" call pencil#init({"wrap" : "soft"})
@@ -192,7 +189,8 @@ function! Notetaking()
 	" call AutoCorrect()
 endfunction
 
-autocmd BufNewFile,BufRead *.md call Notetaking()
+autocmd Filetype pandoc	 call Notetaking()
+
 
 " Open Goyo and call Notetaking function to fix conceal of listing bullets
 map <F10> :Goyo<CR>:call Notetaking()<CR>
@@ -208,6 +206,9 @@ augroup END
 " Plugin Settings {{{1
 colorscheme gruvbox 					" Use Gruvbox Colour Scheme
 
+" vimtex{{{2
+let g:tex_flavor = 'plain'
+" }}}2
 
 " NERD Tree {{{2
 " Map openning NERDTree to Ctrl-O
@@ -234,6 +235,13 @@ if !exists("g:go_fmt_command")
 endif
 " }}}2
 
+" vim-go {{{2
+"let g:go_def_mapping_enabled = 0
+
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
+" }}}2
+
 "Gitv {{{2
 " let Gitv_OpenHorizontal =1 				" Change Vertical to Horizontal Gitv
 "}}} 2
@@ -248,7 +256,7 @@ let g:pandoc#formatting#mode="h"
 let g:pandoc#formatting#textwidth=80
 
 " Better folds
-let g:pandoc#folding#fold_yaml = 1
+" let g:pandoc#folding#fold_yaml = 1
 let g:pandoc#folding#mode = "relative"
 
 " Disable fold column for pandoc
@@ -258,7 +266,7 @@ let g:pandoc#folding#fdc = 0
 " YCM {{{2
 
 " Remove Preview window from YCM
-set completeopt-=preview
+"set completeopt-=preview
 
 " make YCM compatible with UltiSnips (using supertab), by
 " removing the default <tab> binding
