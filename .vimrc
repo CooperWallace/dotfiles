@@ -1,8 +1,8 @@
 " vim: set fdm=marker:
 " General/ Quality of Life {{{
+call has('python3')
 set nocompatible 	" Disable Vi options
 set exrc			" Use Settings in current dir
-call has('python3')
 set scrolloff =5
 set autoindent
 set number
@@ -106,7 +106,9 @@ Plug 'scrooloose/nerdtree'
 Plug 'vim-scripts/Align'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'Valloric/YouCompleteMe'
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 Plug 'tpope/vim-surround'
 Plug 'Chiel92/vim-autoformat'
 Plug '907th/vim-auto-save'				" Autosave on Insertion change
@@ -262,18 +264,6 @@ let g:pandoc#folding#mode = "relative"
 " Disable fold column for pandoc
 let g:pandoc#folding#fdc = 0
 " }}}2
-
-" YCM {{{2
-
-" Remove Preview window from YCM
-"set completeopt-=preview
-
-" make YCM compatible with UltiSnips (using supertab), by
-" removing the default <tab> binding
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
-"}}}2
 
 " Ultisnippets {{{2
 " Expand UltiSnippets by using the <tab> key
