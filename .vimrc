@@ -1,8 +1,8 @@
 " vim: set fdm=marker:
 " General/ Quality of Life {{{
+call has('python3')
 set nocompatible 	" Disable Vi options
 set exrc			" Use Settings in current dir
-call has('python3')
 set scrolloff =5
 set autoindent
 set number
@@ -106,7 +106,9 @@ Plug 'scrooloose/nerdtree'
 Plug 'vim-scripts/Align'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'Valloric/YouCompleteMe'
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 Plug 'tpope/vim-surround'
 Plug 'Chiel92/vim-autoformat'
 Plug '907th/vim-auto-save'				" Autosave on Insertion change
