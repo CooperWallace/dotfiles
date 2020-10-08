@@ -8,7 +8,10 @@
 
 \usepackage{graphicx}
 \usepackage{xcolor}
+\usepackage{geometry} 	% Change margin geometry
+\geometry{margin=1in}
 \usepackage{wrapfig}
+
 \PassOptionsToPackage{fleqn}{amsmath}
 
 \usepackage[version=3]{mhchem} 	% Chemical environment for Nuclear Notation
@@ -16,9 +19,20 @@
 \usepackage{svrsymbols}
 \usepackage{mathtools}
 
+\usepackage{amsthm}
+
+\usepackage{qtree}
+
+
+% Specific to Desktop
+\newcommand{\passthrough}[1]{\lstset{mathescape=false}#1\lstset{mathescape=true}}
+
+\graphicspath{{figures/}} %Setting the graphicspath
+
 % Disable spacing before itemize, etc
 \usepackage{enumitem}
 \setlist{topsep=0pt}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom macros are defined in the 'customMacros.tex' file
 % import needs to be used for file path outside cwd
@@ -33,9 +47,8 @@
 %\setstretch{1}
 
 \setlength{\parskip}{5pt}
-\setlength{\parindent}{0pt}
+\setlength{\parindent}{5pt}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom Environments
 
 % Allow Environment break over line
@@ -59,6 +72,23 @@
 }
 \makeatother
 
+% Example Environment
+
+
+\makeatletter
+\newenvironment{example}[1][Example]{\par
+  \normalfont \topsep6\p@\@plus6\p@\relax
+  \list{}{%
+	\settowidth{\leftmargin}{\textbf{Example}:\hskip\labelsep}%
+    \setlength{\labelwidth}{0pt}%
+    \setlength{\itemindent}{-\leftmargin}%
+  }%
+  \item[\hskip\labelsep\textbf{#1\@addpunct}{:}]\ignorespaces
+}{%
+  \endlist\@endpefalse
+}
+\makeatother
+
 
 \newenvironment{boxtext} {
 	\vspace{0.5em}
@@ -77,6 +107,17 @@
 	\let\Begin\begin
 	\let\End\end
 }
+
+
+% Augmented Matrix support
+%https://tex.stackexchange.com/questions/2233/whats-the-best-way-make-an-augmented-coefficient-matrix
+%https://texblog.net/latex-archive/maths/amsmath-matrix/
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
 
 %% Fancy Code Blocks
 %% Source:
