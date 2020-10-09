@@ -160,56 +160,11 @@ endfunc
 
 autocmd BufWritePre * call IsWhitespace()
 " }}}
-" Notetaking Functions {{{
-
-" Taken from Pro Vim book
-" Underline mis-spelling or words that need capitalization
-" No colors to minimize distraction
-fun! SetSpellingColors()
-	highlight SpellBad cterm=underline
-	highlight SpellCap cterm=underline
-endfun
-
-function! Notetaking()
-	" Pencil with Soft line breaks
-	" call pencil#init({"wrap" : "soft"})
-
-	set textwidth=80
-	" Disable item character coneal
-	setlocal conceallevel=2
-	" Disable numbers, not needed
-	setlocal nonumber
-	setlocal spell spelllang=en_us
-
-	call SetSpellingColors()
-
-	" Enable vimtex usage in Markdown files.
-	call vimtex#init()
-	call litecorrect#init()
-	call textobj#sentence#init()
-	" Great plugin, but slows down load.
-	" call AutoCorrect()
-endfunction
-
-autocmd Filetype pandoc	 call Notetaking()
-
-
-" Open Goyo and call Notetaking function to fix conceal of listing bullets
-map <F10> :Goyo<CR>:call Notetaking()<CR>
-
-augroup GoyoBGFix
-	" Reset colorscheme when leaving Goyo
-	autocmd! User GoyoLeave
-	autocmd  User GoyoLeave nested set background=dark
-augroup END
-
-
-" }}}}}}
 " Plugin Settings {{{1
 colorscheme gruvbox 					" Use Gruvbox Colour Scheme
 
 " vimtex{{{2
-let g:tex_flavor = 'plain'
+let g:tex_flavor = 'latex'
 " }}}2
 
 " NERD Tree {{{2
