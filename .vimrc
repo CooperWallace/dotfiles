@@ -38,7 +38,7 @@ map q: :q
 
 " simple pasting from the system clipboard
 " http://tilvim.com/2014/03/18/a-better-paste.html
-map <Leader>p :set paste<CR>o<esc>"+]p:set nopaste<cr>
+map <Leader>p :set paste<CR>o<esc>:r!xclip -o<cr>:set nopaste<cr>
 
 " }}}
 " Key Mapping {{{
@@ -108,6 +108,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 Plug 'tpope/vim-surround'
 Plug 'Chiel92/vim-autoformat'
@@ -118,11 +119,14 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv', {'on': ['Gitv']}
 "Plug 'leafgarland/typescript-vim'
-"Plug 'fatih/vim-go'
+Plug 'fatih/vim-go'
+
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'vim-pandoc/vim-pandoc-syntax'
-Plug 'vivien/vim-linux-coding-style'
+"Plug 'vivien/vim-linux-coding-style'
 Plug 'nathanaelkane/vim-indent-guides'
+Plug 'jvirtanen/vim-octave'
+Plug 'yinflying/matlab.vim'
 
 " Prose related
 Plug 'reedes/vim-pencil'				" Wrap line properly, Writing in VIM
