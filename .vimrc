@@ -3,10 +3,12 @@
 call has('python3')
 set nocompatible 	" Disable Vi options
 set exrc			" Use Settings in current dir
+
 set scrolloff =5
 set autoindent
 set number
 set tabstop=4
+set softtabstop=4
 set shiftwidth=4
 set t_Co=256
 
@@ -42,6 +44,10 @@ map <Leader>p :set paste<CR>o<esc>:r!xclip -o<cr>:set nopaste<cr>
 
 " }}}
 " Key Mapping {{{
+
+" Disable Mode
+nnoremap Q <nop>
+nmap <F1> <nop>
 
 " Sudo Save
 cmap w!! w !sudo tee > /dev/null %
