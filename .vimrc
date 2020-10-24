@@ -80,6 +80,7 @@ nmap <leader>lr <plug>(vimtex-env-change)
 " On the fly rc editing, and sourcing
 nnoremap <leader>ev :tabnew $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>es :UltiSnipsEdit<cr>
 nnoremap <leader>ss :call UltiSnips#RefreshSnippets()<cr>
 
 " Operation-Pending Mappings
@@ -126,6 +127,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv', {'on': ['Gitv']}
 "Plug 'leafgarland/typescript-vim'
 Plug 'fatih/vim-go'
+
+Plug 'bounceme/restclient.vim'
 
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'vim-pandoc/vim-pandoc-syntax'
@@ -252,7 +255,14 @@ let g:vimwiki_list = [
 			\{'path': '~/grive/vimwiki/work', 'syntax': 'markdown', 'ext': '.md'}
 			\]
 
-let g:vimwiki_folding = 'expr'
+" let g:vimwiki_folding = 'expr'
 
 " }}}2
+
+" Bullets.vim {{{2
+
+" Disable indent changiindent changing bullet type
+let g:bullets_outline_levels=['ROM', 'ABC', 'num', 'abc', 'rom', 'std-']
+" }}}2
+
 " }}}1
