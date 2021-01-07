@@ -11,7 +11,17 @@ extends tex
 extends texmath
 
 # overwrite if necessary
-priority -49
+priority -50
+
+################################################################################
+# Context for Math Environments
+# src: https://castel.dev/post/lecture-notes-1/
+
+global !p
+
+def isMath():
+	return vim.eval('vimtex#syntax#in_mathzone()') == '1'
+endglobal
 
 ################################################################################
 # Global Snippets
@@ -159,6 +169,7 @@ $1
 $0
 endsnippet
 
+context "isMath()"
 snippet arr "begin array environment"
 \begin{array}{${1:l}}
 	${2:${VISUAL}}
@@ -199,6 +210,7 @@ snippet frac "Fraction" i
 \frac{${1:1}}{${2:2}}
 endsnippet
 
+context "isMath()"
 snippet stirl "Stirling Number of the 2nd King" iA
 \stirling{$1}{$2}
 endsnippet
@@ -246,7 +258,7 @@ endsnippet
 context "isMath()"
 snippet cases "Peacewise Cases" i
 \begin{cases}
-	1 & n= 0
+	$1
 \end{cases}
 endsnippet
 
@@ -255,8 +267,19 @@ snippet ce "Chemical Equations" i
 \ce{^${1}_${2} ${3}}
 endsnippet
 
+context "isMath()"
+snippet ub "Underbrace" i
+\underbrace{${1}}_{${2}}
+endsnippet
+
+context "isMath()"
+snippet mbb "Underbrace" i
+\mathbb{$1} $0
+endsnippet
+
 # Subscripts
 
+context "isMath()"
 snippet /\_\_/ "Subscript" riA
 _{$1}$0
 endsnippet
@@ -358,10 +381,12 @@ snippet ddt "Integral of t" iA
 \frac{d}{dt} $0
 endsnippet
 
+context "isMath()"
 snippet abs "Absolute Value" iA
 \abs{$1} $0
 endsnippet
 
+context "isMath()"
 snippet lra "Left right angle" iA
 \langle $1 \rangle $0
 endsnippet
