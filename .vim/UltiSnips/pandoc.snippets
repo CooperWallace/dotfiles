@@ -50,18 +50,46 @@ def create_matrix(snip):
 
         snip.expand_anon(final_str)
 
-# Check if the specific function is inside a math environment
-# Move isMath() function into a Python function
-# https://vi.stackexchange.com/questions/18136/make-conditional-imap-to-text-\
-# being-enclosed-in-certain-characters
-def isMath():
-	env = vim.eval("match(map(synstack(line('.'), max([col('.') - 1, 1])),\
-		'synIDattr(v:val, ''name'')'), '^texMathZone[A-Z]S\?$') >= 0")
-	return env == "1"
+# Define a Python script to create a matrix in Math Mode
+# source
+# https://vi.stackexchange.com/questions/17439/easiest-way-to-insert-latex-matrix/17443
+def create_aug_matrix(snip):
+
+        matrix_str = (snip.buffer[snip.line].split('augmat')[0]+'matrix').strip()
+
+        rows = 'x'.join(snip.buffer[snip.line].split("x", 2)[:-1])
+        cols = 'x'.join(snip.buffer[snip.line].split("x", 2)[-1:])
+
+        int_val = lambda string: int(''.join(s for s in string if s.isdigit()))
+
+        rows = int_val(rows)
+        cols = int_val(cols)
+
+        offset = cols + 1
+        old_spacing = snip.buffer[snip.line][:snip.buffer[snip.line].rfind('\t') + 1]
+
+        snip.buffer[snip.line] = ''
+
+        final_str = old_spacing + "\\begin{"+matrix_str+"}[" + (cols-1)*'c'+"|c]\n"
+
+        for i in range(rows):
+                final_str += old_spacing + '\t'
+                final_str += " & ".join(['$' + str(i * cols + j + offset) for j in range(cols)])
+
+                final_str += " \\\\\\\n"
+
+        final_str += old_spacing + "\\end{"+matrix_str+"}\n$0"
+
+        snip.expand_anon(final_str)
+
 endglobal
 
 pre_expand "create_matrix(snip)"
 snippet "(small|[bBpvV])?mat(rix)?(\d+)x(\d+)" "Generate (small|[bBpvV])?matrix of *rows* by *columns*" br
+endsnippet
+
+pre_expand "create_aug_matrix(snip)"
+snippet "(small|[bBpvV])?augmat(rix)?(\d+)x(\d+)" "Generate (small|[bBpvV])?matrix of *rows* by *columns*" br
 endsnippet
 
 ################################################################################
@@ -124,6 +152,20 @@ $1
 $0
 endsnippet
 
+snippet ex "Example"
+\begin{example}
+$1
+\end{example}
+$0
+endsnippet
+
+snippet arr "begin array environment"
+\begin{array}{${1:l}}
+	${2:${VISUAL}}
+\end{array}
+endsnippet
+
+
 ################################################################################
 # Document Text Formatting Snippets
 
@@ -145,6 +187,10 @@ snippet aside "Aside Text"
 \end{boxtext}
 endsnippet
 
+snippet ccbl "Inline Code Block" iA
+\`$1\`$0
+endsnippet
+
 ################################################################################
 # LaTeX Math Snippets
 
@@ -152,6 +198,11 @@ context "isMath()"
 snippet frac "Fraction" i
 \frac{${1:1}}{${2:2}}
 endsnippet
+
+snippet stirl "Stirling Number of the 2nd King" iA
+\stirling{$1}{$2}
+endsnippet
+
 
 # Taken from the great
 # https://gist.github.com/gillescastel/8da990dbc83c1c86f8ca048bc83624f0
@@ -249,24 +300,24 @@ endsnippet
 # Mathematical Symbol Macros
 
 snippet >= "Greater than equal" iA
-\geq
+\geq $0
 endsnippet
 
 snippet <= "Less than equal" iA
-\leq
+\leq $0
 endsnippet
 
 snippet != "Not equal" iA
-\neq
+\neq $0
 endsnippet
 
 snippet ~= "Approximate" iA
-\approx
+\approx $0
 endsnippet
 
 context "isMath()"
 snippet !~ "Not Approximate" iA
-\not \approx
+\not \approx $0
 endsnippet
 
 snippet sqrt "Square root" iA
@@ -279,11 +330,15 @@ endsnippet
 
 # Set Theory
 snippet notin "not in" iA
-\not\in
+\not\in $0
 endsnippet
 
 snippet UU "cup" iA
-\cup
+\cup $0
+endsnippet
+
+snippet NN "cap" iA
+\cap $0
 endsnippet
 
 snippet binom "Binomial environment" i
@@ -303,14 +358,25 @@ snippet ddt "Integral of t" iA
 \frac{d}{dt} $0
 endsnippet
 
+snippet abs "Absolute Value" iA
+\abs{$1} $0
+endsnippet
+
+snippet lra "Left right angle" iA
+\langle $1 \rangle $0
+endsnippet
+
+
+
 ################################################################################
 # Templates
 ## Inspiration from Lervag dotvim
 
 snippet incimg "Include a Graphical image" i
 \begin{center}
-	\includegraphics[scale=${1}]{./figures/${2}}
+	\includegraphics[width=0.5\textwidth]{./figures/${1}}
 \end{center}
+$0
 endsnippet
 
 snippet incfig "Include pdf_tex image" i
@@ -325,3 +391,10 @@ snippet wrapfig "Wrap Figue" i
 \end{wrapfigure}
 $0
 endsnippet
+
+# Notemgr specific command!
+snippet scrot "Take a screenshot and include" i
+\includegraphics[width=0.5}\textwidth]{./figures/`notemgr-scrot`}
+$0
+endsnippet
+
