@@ -162,6 +162,20 @@ $1
 $0
 endsnippet
 
+snippet thm "Theorem environment"
+\begin{theorem}
+$1
+\end{theorem}
+$0
+endsnippet
+
+snippet def "Definition environment"
+\begin{definition}
+$1
+\end{definition}
+$0
+endsnippet
+
 snippet ex "Example"
 \begin{example}
 $1
@@ -187,6 +201,12 @@ endsnippet
 snippet bl "Bold line"
 **${1:Text}**
 endsnippet
+
+context "isMath()"
+snippet bl "Bold line"
+\textbf{${1:Text}}
+endsnippet
+
 
 snippet bul "Bolder underlined"
 **\underline{${1:Text}}**
@@ -240,7 +260,7 @@ snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
 endsnippet
 
 snippet lim "Limits" i
-\lim_{x\to ${1:}}
+\lim_{n\to ${1:}}
 endsnippet
 
 snippet hlim "First principle derivative" i
@@ -260,6 +280,14 @@ snippet cases "Peacewise Cases" i
 \begin{cases}
 	$1
 \end{cases}
+endsnippet
+
+priority 100
+context "isMath()"
+snippet rcases "Reverse Peacewise Cases" i
+\begin{rcases}
+	$1
+\end{rcases}
 endsnippet
 
 context "isMath()"
@@ -295,7 +323,6 @@ snippet // "Fraction" iA
 endsnippet
 
 priority 100
-context "isMath()"
 snippet p// "Partial Fraction" iA
 \\frac{\partial $1}{\partial $2}$0
 endsnippet
@@ -391,9 +418,60 @@ snippet lra "Left right angle" iA
 \langle $1 \rangle $0
 endsnippet
 
+context "isMath()"
+snippet o+ "Oplus" iA
+\oplus $0
+endsnippet
 
+context "isMath()"
+snippet o. "Oplus" iA
+\odot $0
+endsnippet
+
+context "isMath()"
+snippet itrig "Complex Trig"
+\cos $1 + i\sin $1 $0
+endsnippet
+
+context "isMath()"
+snippet set "Define a set"
+\set{$1} $0
+endsnippet
+
+context "isMath()"
+snippet imp "Implication" iA
+\implies $0
+endsnippet
+
+context "isMath()"
+snippet inv "Inverse" i
+${1}^{-1} $0
+endsnippet
+
+context "isMath()"
+snippet poly "Polynomial" i
+$1_$2 x^$2 + ... + $1x + $1_0
+endsnippet
+
+context "isMath()"
+snippet ring "Ring definition" i
+(${1:R}, ${2:+}, ${3:\cdot})
+endsnippet
+
+priority 100
+context "isMath()"
+snippet '(?<!\\)(sin|cos|tan|arccot|cot|csc|ln|log|exp|star|perp)' "ln" rwA
+\\`!p snip.rv = match.group(1)`
+endsnippet
+
+priority 200
+context "isMath()"
+snippet '(?<!\\)(arcsin|arccos|arctan|arccot|arccsc|arcsec|pi|zeta|int)' "ln" rwA
+\\`!p snip.rv = match.group(1)`
+endsnippet
 
 ################################################################################
+
 # Templates
 ## Inspiration from Lervag dotvim
 
@@ -419,7 +497,7 @@ endsnippet
 
 # Notemgr specific command!
 snippet scrot "Take a screenshot and include" i
-\includegraphics[width=0.5}\textwidth]{./figures/`notemgr-scrot`}
+\includegraphics[width=0.5\textwidth]{./figures/`notemgr-scrot`}
 $0
 endsnippet
 
