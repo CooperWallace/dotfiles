@@ -18,6 +18,7 @@ set tw=80 " Line width
 
 set scrolloff=5		" Always show 5 lines
 
+syntax on
 syntax enable
 filetype plugin on
 filetype indent on
@@ -41,6 +42,16 @@ map q: :q
 " simple pasting from the system clipboard
 " http://tilvim.com/2014/03/18/a-better-paste.html
 map <Leader>p :set paste<CR>o<esc>:r!xclip -o<cr>:set nopaste<cr>
+
+
+" Enable Shift + Arrow keys in TMUX windows
+if &term =~ '^screen'
+	" tmux will send xterm-style keys when its xterm-keys option is on
+	execute "set <xUp>=\e[1;*A"
+	execute "set <xDown>=\e[1;*B"
+	execute "set <xRight>=\e[1;*C"
+	execute "set <xLeft>=\e[1;*D"
+endif
 
 " }}}
 " Key Mapping {{{
@@ -126,7 +137,8 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv', {'on': ['Gitv']}
 "Plug 'leafgarland/typescript-vim'
-Plug 'fatih/vim-go'
+"Plug 'fatih/vim-go'
+Plug 'dccmx/vim-lemon-syntax'
 
 Plug 'bounceme/restclient.vim'
 
@@ -148,7 +160,6 @@ Plug 'kana/vim-textobj-user'			" textobj-sentence dep
 Plug 'reedes/vim-textobj-sentence'		" Treat senteces as text objects
 
 " Look and Feel
-Plug 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plug 'junegunn/goyo.vim'
 Plug 'mikewest/vimroom'
 
@@ -183,6 +194,8 @@ let g:tex_flavor = 'latex'
 " NERD Tree {{{2
 " Map openning NERDTree to Ctrl-O
 noremap <C-o> :NERDTreeToggle<CR>
+"
+
 let NERDTreeQuitOnOpen =1				" Don't close pane after opening file
 " }}}2
 
@@ -191,12 +204,15 @@ let NERDTreeQuitOnOpen =1				" Don't close pane after opening file
 " https://github.com/tpope/vim-surround/issues/47
 	let g:surround_{char2nr('c')} = "\\\1command\1{\r}"
 
+	let b:surround_{char2nr("e")} = "\\begin{\1environment: \1}\n\t\r\n\\end{\1\1}"
+
 " markdown bold **word**
 	let g:surround_{char2nr('o')} = "**\r**"
 " Bolded and Underlined. Sub title
 	let g:surround_{char2nr('t')} = "**\\underline{\r}**"
 " Underline
 	let g:surround_{char2nr('u')} = "\\underline{\r}"
+	let b:surround_{char2nr('U')} = "\\underbrace{\r}"
 " }}}2
 
 " Go Format {{{2
@@ -263,6 +279,12 @@ let g:vimwiki_list = [
 
 " Disable indent changiindent changing bullet type
 let g:bullets_outline_levels=['ROM', 'ABC', 'num', 'abc', 'rom', 'std-']
+" }}}2
+
+" coc.nvim {{{2
+
+nmap <leader>rn <Plug>(coc-rename)
+
 " }}}2
 
 " }}}1
