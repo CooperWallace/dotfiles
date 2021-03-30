@@ -7,13 +7,15 @@
 % Additional Packages
 
 \usepackage{graphicx}
+% Speedup complication of included images
+%\usepackage[allfiguresdraft]{draftfigure}
+
 \usepackage{xcolor}
 \usepackage{geometry} 	% Change margin geometry
-\geometry{margin=1in}
+\geometry{margin=1.2in}
 \usepackage{wrapfig}
 
 \PassOptionsToPackage{fleqn}{amsmath}
-
 \usepackage[version=3]{mhchem} 	% Chemical environment for Nuclear Notation
 \usepackage{physics}	% Physics
 \usepackage{svrsymbols}
@@ -22,7 +24,13 @@
 \usepackage{amsthm}
 
 \usepackage{qtree}
+\usepackage{algorithm2e}
 
+% Margin Notes on Left Side for
+%\usepackage{marginnote}
+%\reversemarginpar
+
+\usepackage{longdivision}
 
 % Specific to Desktop
 \newcommand{\passthrough}[1]{\lstset{mathescape=false}#1\lstset{mathescape=true}}
@@ -54,6 +62,15 @@
 % Allow Environment break over line
 \allowdisplaybreaks
 
+% New Theorem
+
+
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{remark}{Remark}
+\newtheorem*{claim}{Claim}
+
 % Redefine proof environment to be indented automatically.
 % https://tex.stackexchange.com/questions/279725/indent-proof-environment/279729#279729
 
@@ -73,7 +90,6 @@
 \makeatother
 
 % Example Environment
-
 
 \makeatletter
 \newenvironment{example}[1][Example]{\par
