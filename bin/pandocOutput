@@ -3,6 +3,8 @@
 
 ################################################################################
 
+
+INPUT="$@"
 # Compilation Directory for intermediate files
 TMP_COMPILE_DIR="$HOME/.pandoc/compile/"
 # Compilation name for intermediate tex file
@@ -11,12 +13,29 @@ TEX_NAME=default
 TEX_FILE="$TMP_COMPILE_DIR$TEX_NAME".tex
 # Finished Compilation file location
 TMP_PDF_LOCATION="$TMP_COMPILE_DIR$TEX_NAME".pdf
+TMP_COMPILE_FIGURES_DIR="$HOME/.pandoc/compile/figures"
 
 # Pandoc Flags and Header
 PANDOC_FLAGS="--listings"
 PANDOC_FLAGS=$PANDOC_FLAGS" -H /home/cooper/.pandoc/header.tex" 	# Extension header file
+PANDOC_FLAGS="$PANDOC_FLAGS --template=/home/cooper/.pandoc/default.latex"
+PANDOC_FLAGS="$PANDOC_FLAGS --variable classoption=fleqn"
 
 ################################################################################
+
+# Function to execute before the compilation
+pre_compile() {
+	# Remove figures Compile directory if it is currently linked
+	if [[ -L "$TMP_COMPILE_FIGURES_DIR" ]]; then
+		rm "$TMP_COMPILE_FIGURES_DIR"
+	fi
+
+	# Link Figures directory iif exists
+	if [[ -d "`pwd`/figures" ]]; then
+		echo "Linking figures"
+		ln -s "`pwd`/figures"  "$TMP_COMPILE_FIGURES_DIR"
+	fi
+}
 
 # Compile a file using Pandoc and pdflatex for faster compilation
 compile_file() {
@@ -28,7 +47,6 @@ compile_file() {
 		echo "$IN_FILENAME already compiled"
 		return
 	fi
-
 
 	pandoc $PANDOC_FLAGS -o "$TEX_FILE" "$IN_FILENAME"
 
@@ -56,6 +74,7 @@ if [[ ! -e  "../Output/" ]]; then
 fi
 
 
+pre_compile
 
 for f in *.md; do
 	compile_file "${f}"
@@ -66,3 +85,5 @@ done
 cd ../Output
 pdfunite `ls Lec* | sort -V` out.pdf
 )
+
+zdg-open "out.pdf" 2>/dev/null & disown
