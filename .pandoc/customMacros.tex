@@ -2,13 +2,14 @@
 % Macro commands for note taking
 \newcommand{\Rational}{\mathbb{Q}}
 
+\renewcommand{\C}{\mathbb{C}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Q}{\mathbb{Q}}
 % \newcommand{\powerset}{\mathcal{P}}
 % Better Powerset symbol
-\newcommand{\powerset}{\raisebox{.15\baselineskip}{\Large\ensuremath{\wp}}}
+\newcommand{\powerset}{\mathcal{P}}
 
 % Command to create a set
 \newcommand{\set}[1]{\{ #1 \}}
@@ -16,3 +17,9 @@
 % Circled Numbers
 \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
 	\node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
+
+% Important Note
+\newcommand{\NB}{{\color{red}\boxed{!!!}\ }}
+
+% Stirling Fraction https://tex.stackexchange.com/a/86059
+\DeclareRobustCommand{\stirling}{\genfrac\{\}{0pt}{}}
