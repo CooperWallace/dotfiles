@@ -53,6 +53,9 @@ if &term =~ '^screen'
 	execute "set <xLeft>=\e[1;*D"
 endif
 
+
+set expandtab
+
 " }}}
 " Key Mapping {{{
 
@@ -122,46 +125,32 @@ call plug#begin('~/.vim/plugged')
 " Tools
 Plug 'scrooloose/nerdtree'
 Plug 'vim-scripts/Align'
-Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 Plug 'jackguo380/vim-lsp-cxx-highlight'
-
-Plug 'tpope/vim-surround'
-Plug 'Chiel92/vim-autoformat'
-Plug '907th/vim-auto-save'				" Autosave on Insertion change
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'bfrg/vim-cpp-modern'
 
 " Language Support
 Plug 'tpope/vim-fugitive'
-Plug 'gregsexton/gitv', {'on': ['Gitv']}
-"Plug 'leafgarland/typescript-vim'
-"Plug 'fatih/vim-go'
-Plug 'dccmx/vim-lemon-syntax'
+Plug 'tpope/vim-surround'
+Plug 'preservim/tagbar'
+Plug 'rbong/vim-flog'
 
-Plug 'bounceme/restclient.vim'
 
-Plug 'PotatoesMaster/i3-vim-syntax'
-Plug 'vim-pandoc/vim-pandoc-syntax'
 "Plug 'vivien/vim-linux-coding-style'
 Plug 'nathanaelkane/vim-indent-guides'
-Plug 'jvirtanen/vim-octave'
-Plug 'yinflying/matlab.vim'
+
+Plug 'junegunn/fzf', {'do': {-> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 " Prose related
-Plug 'reedes/vim-pencil'				" Wrap line properly, Writing in VIM
-Plug 'vim-pandoc/vim-pandoc'			" Pandoc Options
 Plug 'vimwiki/vimwiki'					" Personal Wiki
 Plug 'lervag/vimtex'					" LaTeX extension
 Plug 'reedes/vim-litecorrect'			" Fix common typos
 Plug 'panozzaj/vim-autocorrect'			" Larger Typo corrections
 Plug 'kana/vim-textobj-user'			" textobj-sentence dep
 Plug 'reedes/vim-textobj-sentence'		" Treat senteces as text objects
-
-" Look and Feel
-Plug 'junegunn/goyo.vim'
-Plug 'mikewest/vimroom'
 
 " Color Schemes
 Plug 'flazz/vim-colorschemes' 			" One color scheme plugin to rule them all
@@ -183,6 +172,24 @@ endfunc
 
 
 autocmd BufWritePre * call IsWhitespace()
+
+
+function! UseNearestParentTagsFile()
+  let l:path = "%:p"
+  while expand(l:path) != "/"
+    let l:path = l:path . ":h"
+    if filereadable(expand(l:path) . "/tags")
+      exe "set tags=" . expand(l:path) . "/tags"
+      return
+    endif
+  endwhile
+  echom "No tags file found in path."
+endfunction
+command! UseNearestParentTagsFile call UseNearestParentTagsFile()
+nnoremap <leader>st :UseNearestParentTagsFile<cr>
+
+
+
 " }}}
 " Plugin Settings {{{1
 colorscheme gruvbox 					" Use Gruvbox Colour Scheme
@@ -193,10 +200,10 @@ let g:tex_flavor = 'latex'
 
 " NERD Tree {{{2
 " Map openning NERDTree to Ctrl-O
-noremap <C-o> :NERDTreeToggle<CR>
-"
+noremap <leader>o :NERDTreeToggle<CR>
 
 let NERDTreeQuitOnOpen =1				" Don't close pane after opening file
+let NERDTreeMapOpenInTab='\r'
 " }}}2
 
 " Vim-Surround {{{2
@@ -228,10 +235,6 @@ let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 " }}}2
 
-"Gitv {{{2
-" let Gitv_OpenHorizontal =1 				" Change Vertical to Horizontal Gitv
-"}}} 2
-
 " Typescript {{{2
 let g:typescript_indent_disable =1		" Disable autoindent in Typescript
 " }}}2
@@ -249,16 +252,24 @@ let g:pandoc#folding#mode = "relative"
 let g:pandoc#folding#fdc = 0
 " }}}2
 
-" Ultisnippets {{{2
-" Expand UltiSnippets by using the <tab> key
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+" coc_snippets {{{2
 
-let g:UltiSnipsSnippetDirectories=["~/.vim/UltiSnips/", "UltiSnips"]
 
-" Open Snippet Edit in a new window
-let g:UltiSnipsEditSplit = "tabdo"
+imap <silent><expr> <TAB>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#rpc#request('doKeymap', 'snippets-expand')
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" To make completion works like VSCode
+inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
+let g:coc_snippet_next = '<TAB>'
+let g:coc_snippet_prev = '<S-TAB>'
+
 
 " }}}2
 
@@ -287,4 +298,40 @@ nmap <leader>rn <Plug>(coc-rename)
 
 " }}}2
 
+" fzf.vim {{{2
+
+nmap <leader>ff :FZF -i <enter>
+nmap <leader>rg :Rg<enter>
+nmap <leader>fh :History<enter>
+nnoremap <silent> <Leader>ft :Tags <C-R><C-W><CR>
+nnoremap <silent> <Leader>Rg :Rg <C-R><C-W><CR>
+nnoremap <silent> <Leader>ag :Ag<CR>
+nnoremap <silent> <Leader>Ag :Ag <C-R><C-W><CR>
+
+
+" }}}2
+
 " }}}1
+
+" vimwiki
+function! VimwikiFoldLevelCustom(lnum)
+	let pounds = strlen(matchstr(getline(a:lnum), '^#\+'))
+	if (pounds)
+		return '>' . pounds  " start a fold level
+	endif
+	if getline(a:lnum) =~? '\v^\s*$'
+		if (strlen(matchstr(getline(a:lnum + 1), '^#\+')))
+			return '-1' " don't fold last blank line before header
+		endif
+	endif
+	return '=' " return previous fold level
+endfunction
+
+
+augroup VimrcAuGroup
+	autocmd FileType vimwiki set foldexpr=VimwikiFoldLevelCustom(v:lnum)
+	autocmd FileType vimwiki setlocal foldmethod=expr
+augroup END
+
+autocmd FileType gitcommit setlocal spell
+
