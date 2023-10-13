@@ -1,8 +1,8 @@
-# If you come from bash you might have to change your $PATH.
- export PATH=$HOME/bin:/usr/local/bin:$PATH
+# If you come from bash you might have to change your $PATH
+ export PATH=$HOME/.bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=/home/cooper/.oh-my-zsh
+export ZSH=~/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -12,8 +12,8 @@ ZSH_THEME=powerlevel10k/powerlevel10k
 
 # Customization
 # Only show user name, not host
-POWERLEVEL9K_CONTEXT_TEMPLATE="%n"
-
+POWERLEVEL9K_CONTEXT_TEMPLATE=""
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(virtualenv)
 # https://github.com/bhilburn/powerlevel9k/issues/552
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
 POWERLEVEL9K_SHORTEN_STRATEGY=truncate_folders
@@ -46,7 +46,7 @@ POWERLEVEL9K_SHORTEN_STRATEGY=truncate_folders
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -60,7 +60,15 @@ POWERLEVEL9K_SHORTEN_STRATEGY=truncate_folders
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git colored-man-pages zsh-autosuggestions)
+plugins=(
+    git
+    colored-man-pages
+    z
+    zsh-autosuggestions
+    virtualenv
+    branch
+    ohmyzsh-full-autoupdate
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -90,35 +98,10 @@ export EDITOR='vim'
 # Terminal Command for Ranger
 export TERMCMD='urxvt'
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-alias vimrc='vim ~/.vimrc'
-alias csy='cd ~/grive/University/WINTER\ 2019/'
-alias ww="vim ~/grive/vimwiki/personal/index.md"
+if [ -f ~/.zsh_aliases ]; then
+	. ~/.zsh_aliases
+fi
 
-alias update='sudo pacman -Syyu'
-
-# Shorthand for Grep History
-alias gh='history | grep '
-
-# History File Settings
 HISTSIZE=20000
-
 setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
 setopt SHARE_HISTORY             # Share history between all sessions.
-
-# Command not found suggestion
-#. /etc/zsh_command_not_found
-
-# Z jump based on Frequency and Recentness
-. /home/cooper/Development/builds/z/z.sh
-
-
-# Set zsh to use the powerline theme
-# . /usr/lib/python3.7/site-packages/powerline/bindings/zsh/powerline.zsh

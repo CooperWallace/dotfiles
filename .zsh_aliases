@@ -1,0 +1,27 @@
+# ZSH Definitions
+
+
+## Aliases
+alias vim='nvim'
+alias ww='nvim ~/vimwiki/index.md'
+
+# Shorthand for Grep History
+alias gh='history | grep -i $@'
+alias j='z'
+
+alias grepr='grep -rni'
+alias rg='rg -i'
+
+alias extract_tars='ls *.tar.gz | xargs -n1 tar xvf'
+
+function ff() {
+    find . -iname "*$@*" -not -path '*/\.git/*'  2&>/dev/null
+}
+
+function rpmextract () {
+    rpm2cpio $1 | cpio -i --make-directories
+}
+
+function gentags () {
+    ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .
+}
