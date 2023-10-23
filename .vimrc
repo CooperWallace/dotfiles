@@ -12,6 +12,8 @@ set softtabstop=4
 set shiftwidth=4
 set t_Co=256
 
+set mouse=
+
 set foldcolumn=0
 
 set tw=80 " Line width
@@ -55,6 +57,8 @@ endif
 
 
 set expandtab
+" Causes issues with cscope / fzf
+" set autochdir
 
 " }}}
 " Key Mapping {{{
@@ -92,8 +96,8 @@ inoremap JK <esc>
 nmap <leader>lr <plug>(vimtex-env-change)
 
 " On the fly rc editing, and sourcing
-nnoremap <leader>ev :tabnew $MYVIMRC<cr>
-nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>ev :tabnew $MYVIMRC<cr>:vsplit ~/.vimrc<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>:source ~/.vimrc<cr>
 nnoremap <leader>es :UltiSnipsEdit<cr>
 nnoremap <leader>ss :call UltiSnips#RefreshSnippets()<cr>
 
@@ -118,27 +122,41 @@ nmap vim vi$
 nmap vam va$
 
 
+nnoremap <silent> <F8> :TlistToggle<CR>
+
+
 " }}}
 " Plugins {{{
 
 call plug#begin('~/.vim/plugged')
 " Tools
-Plug 'scrooloose/nerdtree'
 Plug 'vim-scripts/Align'
 Plug 'honza/vim-snippets'
+Plug 'sankhesh/gitv'
+
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-file-browser.nvim'
+
 
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+
+" Language Support
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'bfrg/vim-cpp-modern'
 
-" Language Support
-Plug 'tpope/vim-fugitive'
+" Code Navigation
+Plug 'hari-rangarajan/CCTree'
+Plug 'vim-scripts/taglist.vim'
+Plug 'antiagainst/cscope-macros.vim'
 Plug 'tpope/vim-surround'
 Plug 'preservim/tagbar'
-Plug 'rbong/vim-flog'
 
+" Git Support
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
+Plug 'airblade/vim-gitgutter'
 
-"Plug 'vivien/vim-linux-coding-style'
 Plug 'nathanaelkane/vim-indent-guides'
 
 Plug 'junegunn/fzf', {'do': {-> fzf#install() } }
@@ -146,7 +164,6 @@ Plug 'junegunn/fzf.vim'
 
 " Prose related
 Plug 'vimwiki/vimwiki'					" Personal Wiki
-Plug 'lervag/vimtex'					" LaTeX extension
 Plug 'reedes/vim-litecorrect'			" Fix common typos
 Plug 'panozzaj/vim-autocorrect'			" Larger Typo corrections
 Plug 'kana/vim-textobj-user'			" textobj-sentence dep
@@ -192,18 +209,21 @@ nnoremap <leader>st :UseNearestParentTagsFile<cr>
 
 " }}}
 " Plugin Settings {{{1
+augroup my_colours
+  autocmd!
+  autocmd ColorScheme gruvbox hi SpellBad cterm=reverse ctermfg=red
+augroup END
 colorscheme gruvbox 					" Use Gruvbox Colour Scheme
 
 " vimtex{{{2
 let g:tex_flavor = 'latex'
 " }}}2
 
-" NERD Tree {{{2
+" Telescope File Browser {{{2
 " Map openning NERDTree to Ctrl-O
-noremap <leader>o :NERDTreeToggle<CR>
+noremap <leader>o :Telescope file_browser<CR>
+noremap <leader>O :Telescope file_browser path=%:p:h select_buffer=true<CR>
 
-let NERDTreeQuitOnOpen =1				" Don't close pane after opening file
-let NERDTreeMapOpenInTab='\r'
 " }}}2
 
 " Vim-Surround {{{2
@@ -253,7 +273,9 @@ let g:pandoc#folding#fdc = 0
 " }}}2
 
 " coc_snippets {{{2
-
+let g:coc_snippet_next = '<c-j>'
+let g:coc_snippet_prev = '<c-k>'
+let g:coc_disable_startup_warning = 1
 
 imap <silent><expr> <TAB>
         \ pumvisible() ? "\<C-n>" :
@@ -278,11 +300,10 @@ let g:coc_snippet_prev = '<S-TAB>'
 let g:vimwiki_global_ext =0 " Disable vimwiki in all folders
 " Vimwiki is only usable in Google Drive folder.
 let g:vimwiki_list = [
-			\{'path': '~/grive/vimwiki/personal', 'syntax': 'markdown', 'ext': '.md'},
-			\{'path': '~/grive/vimwiki/work', 'syntax': 'markdown', 'ext': '.md'}
+			\{'path': '~/vimwiki', 'syntax': 'markdown', 'ext': '.md'},
 			\]
 
-" let g:vimwiki_folding = 'expr'
+" let g:vimwiki_folding = 'custom'
 
 " }}}2
 
@@ -334,4 +355,3 @@ augroup VimrcAuGroup
 augroup END
 
 autocmd FileType gitcommit setlocal spell
-
