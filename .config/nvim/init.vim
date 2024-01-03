@@ -2,8 +2,15 @@ set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath=&runtimepath
 source ~/.vimrc
 
-imap <C-l> <Plug>(coc-snippets-expand)
+" General {{{
 
+set mouse=
+
+" }}}
+
+
+" Running older vim
+let g:coc_disable_startup_warning = 1
 
 " setting with vim-lsp
 if executable('ccls')
@@ -25,3 +32,5 @@ endif
 let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
 let g:cpp_class_decl_highlight = 1
+
+
