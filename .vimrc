@@ -138,8 +138,14 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-file-browser.nvim'
 
-
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+
+Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+
+Plug 'neovim/nvim-lspconfig'
+
+Plug 'github/copilot.vim'
 
 " Language Support
 Plug 'jackguo380/vim-lsp-cxx-highlight'
@@ -272,7 +278,14 @@ let g:pandoc#folding#mode = "relative"
 let g:pandoc#folding#fdc = 0
 " }}}2
 
-" coc_snippets {{{2
+" coc.nvim and extensions {{{2
+
+nmap <leader>rn <Plug>(coc-rename)
+" Load on cpp filetype
+autocmd FileType cpp nnoremap <leader>lh :CocCommand clangd.switchSourceHeader<CR>
+
+
+" coc.snippets {{{3
 let g:coc_snippet_next = '<c-j>'
 let g:coc_snippet_prev = '<c-k>'
 let g:coc_disable_startup_warning = 1
@@ -291,6 +304,7 @@ endfunction
 inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<TAB>"
 let g:coc_snippet_next = '<TAB>'
 let g:coc_snippet_prev = '<S-TAB>'
+"}}}3
 
 
 " }}}2
@@ -300,7 +314,7 @@ let g:coc_snippet_prev = '<S-TAB>'
 let g:vimwiki_global_ext =0 " Disable vimwiki in all folders
 " Vimwiki is only usable in Google Drive folder.
 let g:vimwiki_list = [
-			\{'path': '~/vimwiki', 'syntax': 'markdown', 'ext': '.md'},
+			\{'path': '~/vimwiki', 'syntax': 'markdown', 'ext': '.md', 'diary_frequency': 'weekly'}
 			\]
 
 " let g:vimwiki_folding = 'custom'
@@ -313,19 +327,14 @@ let g:vimwiki_list = [
 let g:bullets_outline_levels=['ROM', 'ABC', 'num', 'abc', 'rom', 'std-']
 " }}}2
 
-" coc.nvim {{{2
-
-nmap <leader>rn <Plug>(coc-rename)
-
-" }}}2
 
 " fzf.vim {{{2
 
 nmap <leader>ff :FZF -i <enter>
-nmap <leader>rg :Rg<enter>
+nmap <leader>rg :RG<enter>
 nmap <leader>fh :History<enter>
 nnoremap <silent> <Leader>ft :Tags <C-R><C-W><CR>
-nnoremap <silent> <Leader>Rg :Rg <C-R><C-W><CR>
+nnoremap <silent> <Leader>Rg :RG <C-R><C-W><CR>
 nnoremap <silent> <Leader>ag :Ag<CR>
 nnoremap <silent> <Leader>Ag :Ag <C-R><C-W><CR>
 
