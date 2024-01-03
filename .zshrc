@@ -93,10 +93,8 @@ source $ZSH/oh-my-zsh.sh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 # Editor
-export EDITOR='vim'
-
-# Terminal Command for Ranger
-export TERMCMD='urxvt'
+export EDITOR='nvim'
+export VISUAL='nvim'
 
 if [ -f ~/.zsh_aliases ]; then
 	. ~/.zsh_aliases
@@ -105,3 +103,9 @@ fi
 HISTSIZE=20000
 setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
 setopt SHARE_HISTORY             # Share history between all sessions.
+
+export PYTHONDONTWRITEBYTECODE=1
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
