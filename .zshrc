@@ -96,9 +96,10 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR='nvim'
 export VISUAL='nvim'
 
-if [ -f ~/.zsh_aliases ]; then
-	. ~/.zsh_aliases
-fi
+[ -f ~/.zsh_aliases ] && . ~/.zsh_aliases
+
+# Private Aliases for Specific Dev Machine
+[ -f ~/.zsh_private ] && . ~/.zsh_private
 
 HISTSIZE=20000
 setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
