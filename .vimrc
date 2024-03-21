@@ -130,7 +130,7 @@ nnoremap <silent> <F8> :TlistToggle<CR>
 
 call plug#begin('~/.vim/plugged')
 " Tools
-Plug 'vim-scripts/Align'
+Plug 'junegunn/vim-easy-align'
 Plug 'honza/vim-snippets'
 Plug 'sankhesh/gitv'
 
