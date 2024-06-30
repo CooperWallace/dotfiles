@@ -20,6 +20,8 @@ set laststatus =2   " Status bar
 " https://github.com/johndgiese/dotvim/issues/4
 set t_BE=
 
+set undofile
+
 " simple pasting from the system clipboard
 " http://tilvim.com/2014/03/18/a-better-paste.html
 if executable('ccls')
