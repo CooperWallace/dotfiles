@@ -67,7 +67,7 @@ plugins=(
     zsh-autosuggestions
     virtualenv
     branch
-    ohmyzsh-full-autoupdate
+    #ohmyzsh-full-autoupdate
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -115,3 +115,5 @@ export NVM_DIR="$HOME/.nvm"
 bindkey  "^[[H"   beginning-of-line
 bindkey  "^[[F"   end-of-line
 bindkey  "^[[3~"  delete-char
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
